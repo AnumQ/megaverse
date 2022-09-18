@@ -1,10 +1,96 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Button from "@mui/material/Button";
 
+type Position = {
+  row: string;
+  column: string;
+};
 const Home: NextPage = () => {
+  const CANDIDATE_ID = "ffdba451-a8a7-43eb-a3fd-0231efd01071";
+  const rowsNumber = 11;
+  const columnsNumber = 11;
+  const rows = Array.from(Array(rowsNumber).keys());
+  const cols = Array.from(Array(columnsNumber).keys());
+  let positions: Position[] = [];
+
+  rows.forEach((row) => {
+    cols.forEach((col) => {
+      const pos: Position = { row: `${row}`, column: `${col}` };
+      positions.push(pos);
+    });
+  });
+
+  const createPolyanet = async () => {
+    positions = [];
+
+    rows.forEach((row) => {
+      if (row > 1 && row < 9) {
+        cols.forEach((col) => {
+          if (col > 1 && col < 9) {
+            const pos1: Position = { row: `${row}`, column: `${col}` };
+            if (col === row) {
+              positions.push(pos1);
+              const colInvert = 10 - col;
+              const pos2: Position = { row: `${row}`, column: `${colInvert}` };
+              positions.push(pos2);
+            }
+          }
+        });
+      }
+    });
+    const promises = positions.map((pos) => {
+      return fetch("/api/polyanets/create", {
+        method: "POST",
+        body: JSON.stringify({
+          candidateId: CANDIDATE_ID,
+          row: `${pos.row}`,
+          column: `${pos.column}`,
+        }),
+      });
+    });
+
+    try {
+      const results = await Promise.allSettled(promises);
+
+      results.forEach((res, index) => {
+        if (res.status !== "fulfilled") {
+          console.log(`Failed to Create at position ${index}`);
+        }
+      });
+      console.log("Successfully created polyanets");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const deletePolyanets = async () => {
+    const promises = positions.map((position) => {
+      return fetch("/api/polyanets/delete", {
+        method: "POST",
+        body: JSON.stringify({
+          candidateId: CANDIDATE_ID,
+          row: `${position.row}`,
+          column: `${position.column}`,
+        }),
+      });
+    });
+
+    try {
+      const results = await Promise.allSettled(promises);
+
+      results.forEach((res, index) => {
+        if (res.value.status !== 200) {
+          console.log(`Failed to Delete at position ${index}`);
+        }
+      });
+
+      console.log("Successfully deleted polyanets");
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className={styles.container}>
       <Head>
@@ -22,14 +108,16 @@ const Home: NextPage = () => {
             <h2>Phase1</h2>
             <p>Click the button below to create Polyanet Cross</p>
             <br />
-            <Button
-              variant="outlined"
-              onClick={() => {
-                alert("create");
-              }}
-            >
-              Create
-            </Button>
+            <div>
+              <Button variant="outlined" onClick={createPolyanet}>
+                Create
+              </Button>
+            </div>
+            <div>
+              <Button variant="outlined" onClick={deletePolyanets}>
+                Reset Map
+              </Button>
+            </div>
           </div>
         </div>
       </main>
