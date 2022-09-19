@@ -7,7 +7,7 @@ import { usePolyanets } from "../src/hooks/usePolyanets";
 import { useMap } from "../src/hooks/useMap";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Alert from "@mui/material/Alert";
-import { drawGoalMap } from "../src/UI/Goal";
+import { drawGoalMap, GoalMap } from "../src/UI/Goal";
 import { drawMyMap, MyMap } from "../src/UI/MyMap";
 
 const Home: NextPage = () => {
@@ -43,15 +43,6 @@ const Home: NextPage = () => {
     getGoalMap();
     getMyMap();
   }, []);
-
-  const GoalMap = () => (
-    <div>
-      <div className={styles.inline}>
-        <h2>Goal Map</h2>
-      </div>
-      <div>{goal && goal.map(drawGoalMap)}</div>
-    </div>
-  );
 
   return (
     <div className={styles.container}>
@@ -150,7 +141,7 @@ const Home: NextPage = () => {
           <></>
         )}
         <div className={styles.inline}>
-          <GoalMap />
+          <GoalMap goal={goal} />
           <MyMap myMap={map} getMyMap={getMyMap} />
         </div>
       </main>

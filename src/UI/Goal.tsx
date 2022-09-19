@@ -16,3 +16,12 @@ export const drawGoalMap = (g: [], index: number) => {
     </div>
   );
 };
+
+export const GoalMap = ({ goal }: { goal: [] }) => (
+  <div>
+    <div className={styles.inline}>
+      <h2>Goal Map</h2>
+    </div>
+    <div>{goal && goal.map(drawGoalMap)}</div>
+  </div>
+);
