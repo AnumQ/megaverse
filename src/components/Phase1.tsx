@@ -17,6 +17,38 @@ export const Phase1 = ({
     isDeleteLoading: isDeleteLoadingPhase1,
   } = usePolyanets();
 
+  const CustomButton = ({
+    title,
+    onClick,
+  }: {
+    title: string;
+    onClick: () => void;
+  }) => (
+    <Button variant="outlined" onClick={onClick}>
+      {title}
+    </Button>
+  );
+
+  const handleCreate = async () => {
+    const result = await createPolyanetsPhase1(() => {
+      getMyMap();
+    });
+
+    if (result) {
+      setSuccessInfo(result.success);
+    }
+  };
+
+  const handleReset = async () => {
+    const result = await deletePolyanets(() => {
+      getMyMap();
+    });
+
+    if (result) {
+      setSuccessInfo(result.success);
+    }
+  };
+
   return (
     <div className={styles.card}>
       <h2>Phase1</h2>
@@ -26,40 +58,14 @@ export const Phase1 = ({
         {isCreateLoadingPhase1 ? (
           <CustomLoadingButton />
         ) : (
-          <Button
-            variant="outlined"
-            onClick={async () => {
-              const result = await createPolyanetsPhase1(() => {
-                getMyMap();
-              });
-
-              if (result) {
-                setSuccessInfo(result.success);
-              }
-            }}
-          >
-            Create
-          </Button>
+          <CustomButton title="Create" onClick={handleCreate} />
         )}
       </div>
       <div>
         {isDeleteLoadingPhase1 ? (
           <CustomLoadingButton />
         ) : (
-          <Button
-            variant="outlined"
-            onClick={async () => {
-              const result = await deletePolyanets(() => {
-                getMyMap();
-              });
-
-              if (result) {
-                setSuccessInfo(result.success);
-              }
-            }}
-          >
-            Reset Map
-          </Button>
+          <CustomButton title="Reset Map" onClick={handleReset} />
         )}
       </div>
     </div>
