@@ -196,5 +196,6 @@ export const usePolyanets = () => {
     deletePolyanets,
     deletePolyanetsPhase1,
     deletePolyanetsPhase2,
+    createPolyanetsInLogo,
   };
 };

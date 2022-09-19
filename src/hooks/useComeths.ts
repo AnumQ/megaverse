@@ -56,7 +56,7 @@ export const useComeths = () => {
   const createDownComethsInLogo = async (
     logoDataList: LogoItem[],
     getMyMap: () => void,
-    setIsCreateButtonLoading: any,
+    setIsCreateButtonLoading: React.Dispatch<React.SetStateAction<boolean>>,
     setSuccessInfo: any
   ) => {
     const downComethPositions = _.compact(
@@ -79,7 +79,7 @@ export const useComeths = () => {
   const createRightComethsInLogo = async (
     logoDataList: LogoItem[],
     getMyMap: () => void,
-    setIsCreateButtonLoading: any,
+    setIsCreateButtonLoading: React.Dispatch<React.SetStateAction<boolean>>,
     setSuccessInfo: any
   ) => {
     const rightComethPositions = _.compact(
@@ -103,7 +103,7 @@ export const useComeths = () => {
   const createLeftComethsInLogo = async (
     logoDataList: LogoItem[],
     getMyMap: () => void,
-    setIsCreateButtonLoading: any,
+    setIsCreateButtonLoading: React.Dispatch<React.SetStateAction<boolean>>,
     setSuccessInfo: any
   ) => {
     const leftComethPositions = _.compact(
@@ -127,7 +127,7 @@ export const useComeths = () => {
   const createUpComethsInLogo = async (
     logoDataList: LogoItem[],
     getMyMap: () => void,
-    setIsCreateButtonLoading: any,
+    setIsCreateButtonLoading: React.Dispatch<React.SetStateAction<boolean>>,
     setSuccessInfo: any
   ) => {
     const upComethPositions = _.compact(
@@ -151,14 +151,19 @@ export const useComeths = () => {
   const createRightComethsInLogoRecursively = async (
     positions: Position[],
     getMyMap: () => void,
-    setIsCreateButtonLoading: any,
+    setIsCreateButtonLoading: React.Dispatch<React.SetStateAction<boolean>>,
     setSuccessInfo: any
   ) => {
     const result = await createComeths(positions, "right", async () => {
       getMyMap();
       const missingPositions = await getComethMissingPositions(positions);
+
+      console.log("Line 161");
       if (missingPositions.length > 0) {
         console.log(COMETH_RIGHT_MESSAGE);
+
+        console.log("Line 165");
+
         createRightComethsInLogoRecursively(
           missingPositions,
           getMyMap,
@@ -166,6 +171,8 @@ export const useComeths = () => {
           setSuccessInfo
         );
       } else {
+        console.log("Line 175");
+
         setIsCreateButtonLoading(false);
         if (result) {
           console.log(result.success);
@@ -178,7 +185,7 @@ export const useComeths = () => {
   const createDownComethsInLogoRecursively = async (
     positions: Position[],
     getMyMap: () => void,
-    setIsCreateButtonLoading: any,
+    setIsCreateButtonLoading: React.Dispatch<React.SetStateAction<boolean>>,
     setSuccessInfo: any
   ) => {
     const result = await createComeths(positions, "down", async () => {
@@ -219,7 +226,7 @@ export const useComeths = () => {
   const createLeftComethsInLogoRecursively = async (
     positions: Position[],
     getMyMap: () => void,
-    setIsCreateButtonLoading: any,
+    setIsCreateButtonLoading: React.Dispatch<React.SetStateAction<boolean>>,
     setSuccessInfo: any
   ) => {
     const result = await createComeths(positions, "left", async () => {
@@ -248,7 +255,7 @@ export const useComeths = () => {
   const createUpComethsInLogoRecursively = async (
     positions: Position[],
     getMyMap: () => void,
-    setIsCreateButtonLoading: any,
+    setIsCreateButtonLoading: React.Dispatch<React.SetStateAction<boolean>>,
     setSuccessInfo: any
   ) => {
     const result = await createComeths(positions, "up", async () => {

@@ -31,7 +31,7 @@ export const Phase2 = ({
   getMyMap: () => Promise<void>;
   setSuccessInfo: React.Dispatch<React.SetStateAction<string>>;
 }) => {
-  const { createPolyanets, deletePolyanetsPhase2 } = usePolyanets();
+  const { createPolyanetsInLogo, deletePolyanetsPhase2 } = usePolyanets();
   const { fetchMyMap } = useMap();
   const { createRightComethsInLogo } = useComeths();
   const {
@@ -71,7 +71,7 @@ export const Phase2 = ({
     createRightComethsInLogo(
       logoDataList,
       getMyMap,
-      setIsResetMapButtonLoading,
+      setIsCreateButtonLoading,
       setSuccessInfo
     );
   };
