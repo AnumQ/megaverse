@@ -11,7 +11,7 @@ export const Phase1 = ({
   getMyMap: () => Promise<void>;
   setSuccessInfo: React.Dispatch<React.SetStateAction<string>>;
 }) => {
-  const { createPolyanetsPhase1, deletePolyanets } = usePolyanets();
+  const { createPolyanetsPhase1, deletePolyanetsPhase1 } = usePolyanets();
 
   const {
     isLoading: isCreateButtonLoading,
@@ -38,7 +38,7 @@ export const Phase1 = ({
 
   const handleReset = async () => {
     setIsResetMapButtonLoading(true);
-    const result = await deletePolyanets(() => {
+    const result = await deletePolyanetsPhase1(() => {
       getMyMap();
     });
     setIsResetMapButtonLoading(false);

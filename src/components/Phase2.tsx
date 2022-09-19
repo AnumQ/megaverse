@@ -1,9 +1,10 @@
 import styles from "../../styles/Home.module.css";
 import { POLYANET_TYPE } from "../constants";
+import { useLoading } from "../hooks/useLoading";
 import { usePolyanets } from "../hooks/usePolyanets";
 import { LogoItem } from "../Model/LogoItem";
 import { CustomButton } from "../UI/CustomButton";
-import { CustomLoadingButton } from "../UI/CustomLoadingButton";
+import _ from "lodash";
 
 export const Phase2 = ({
   goalMap,
@@ -14,16 +15,22 @@ export const Phase2 = ({
   getMyMap: () => Promise<void>;
   setSuccessInfo: React.Dispatch<React.SetStateAction<string>>;
 }) => {
+  const { createPolyanets, deletePolyanetsPhase2 } = usePolyanets();
+
   const {
-    createPolyanets,
-    deletePolyanets,
-    isCreateLoading: isCreateLoadingPhase1,
-    isDeleteLoading: isDeleteLoadingPhase1,
-  } = usePolyanets();
+    isLoading: isCreateButtonLoading,
+    setIsLoading: setIsCreateButtonLoading,
+  } = useLoading();
+
+  const {
+    isLoading: isResetMapButtonLoading,
+    setIsLoading: setIsResetMapButtonLoading,
+  } = useLoading();
 
   const logoDataList: LogoItem[] = [];
 
   const handleCreate = async () => {
+    setIsCreateButtonLoading(true);
     if (goalMap.length > 0) {
       goalMap.forEach((row: string[], rowIndex: number) => {
         row.forEach((col: string, colIndex: number) => {
@@ -44,11 +51,6 @@ export const Phase2 = ({
       });
     }
 
-    // console.log("logoDataList");
-    // console.log(logoDataList);
-
-    // use this list to create a list of promnise calls
-
     const polyPositions = _.compact(
       logoDataList.map((logoItem) =>
         logoItem.type === POLYANET_TYPE ? logoItem.position : null
@@ -62,31 +64,29 @@ export const Phase2 = ({
         getMyMap();
       });
 
+      setIsCreateButtonLoading(false);
+
       if (result) {
-        setSuccessInfo(result?.success);
+        console.log(result.success);
+        // setSuccessInfo(result?.success);
       }
     } catch (error) {
+      setIsCreateButtonLoading(false);
+
       console.error(error);
     }
-    // logoDataList.forEach((logoItem) => {
-    //   // console.log(logoItem.type);
-
-    //   if (logoItem.type === POLYANET_TYPE) {
-    //     polyanetsPositions.push(logoItem.position);
-    //   }
-    // });
-
-    // console.log("polyanetsPositions");
-    // console.log(polyanetsPositions);
   };
 
   const handleReset = async () => {
-    // const result = await deletePolyanets(() => {
-    //   getMyMap();
-    // });
-    // if (result) {
-    //   setSuccessInfo(result.success);
-    // }
+    setIsResetMapButtonLoading(true);
+    const result = await deletePolyanetsPhase2(() => {
+      getMyMap();
+    });
+
+    setIsResetMapButtonLoading(false);
+    if (result) {
+      setSuccessInfo(result.success);
+    }
   };
 
   return (
@@ -95,18 +95,18 @@ export const Phase2 = ({
       <p>Crossmint logo. With 🌙SOLoons and ☄comETHs!</p>
       <br />
       <div>
-        {isCreateLoadingPhase1 ? (
-          <CustomLoadingButton />
-        ) : (
-          <CustomButton title="Create" onClick={handleCreate} />
-        )}
+        <CustomButton
+          isLoading={isCreateButtonLoading}
+          title="Create"
+          onClick={handleCreate}
+        />
       </div>
       <div>
-        {isDeleteLoadingPhase1 ? (
-          <CustomLoadingButton />
-        ) : (
-          <CustomButton title="Reset Map" onClick={handleReset} />
-        )}
+        <CustomButton
+          isLoading={isResetMapButtonLoading}
+          title="Reset Map"
+          onClick={handleReset}
+        />
       </div>
     </div>
   );

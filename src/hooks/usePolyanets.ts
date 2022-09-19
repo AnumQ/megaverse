@@ -18,7 +18,7 @@ const rows = Array.from(Array(rowsNumberPhase1).keys());
 const cols = Array.from(Array(columnsNumberPhase1).keys());
 
 export const usePolyanets = () => {
-  const { getAllMapPositionsPhase1 } = useMap();
+  const { getAllMapPositionsPhase1, getAllMapPositionsPhase2 } = useMap();
 
   const startRow = 2;
 
@@ -77,8 +77,19 @@ export const usePolyanets = () => {
     return createPolyanets(posList, onCompletion);
   };
 
-  const deletePolyanets = async (onCompletion: () => void) => {
+  const deletePolyanetsPhase1 = async (onCompletion: () => void) => {
     const posList = getAllMapPositionsPhase1();
+    return deletePolyanets(posList, onCompletion);
+  };
+
+  const deletePolyanetsPhase2 = async (onCompletion: () => void) => {
+    const posList = getAllMapPositionsPhase2();
+    return deletePolyanets(posList, onCompletion);
+  };
+  const deletePolyanets = async (
+    posList: Position[],
+    onCompletion: () => void
+  ) => {
     const promises = posList.map((pos: Position) => {
       return fetch(DELETE_POLYANET, {
         method: POST,
@@ -109,6 +120,8 @@ export const usePolyanets = () => {
   return {
     createPolyanetsPhase1,
     createPolyanets,
-    deletePolyanets,
+    // deletePolyanets,
+    deletePolyanetsPhase1,
+    deletePolyanetsPhase2,
   };
 };
