@@ -10,7 +10,6 @@ import {
   SUCCESS_DELETE_POLYANET,
 } from "../constants";
 import { Position } from "../Model/Position";
-import { useLoading } from "./useLoading";
 import { useMap } from "./useMap";
 
 const rowsNumberPhase1 = 11;
@@ -19,10 +18,6 @@ const rows = Array.from(Array(rowsNumberPhase1).keys());
 const cols = Array.from(Array(columnsNumberPhase1).keys());
 
 export const usePolyanets = () => {
-  const { isLoading: isCreatePhase1Loading, setIsLoading: setIsCreateButtonLoading } =
-    useLoading();
-  const { isLoading: isDeletePhase1Loading, setIsLoading: setIsDeleteButtonLoading } =
-    useLoading();
   const { getAllMapPositionsPhase1 } = useMap();
 
   const startRow = 2;
@@ -69,24 +64,20 @@ export const usePolyanets = () => {
           console.log(`${FAILED_CREATE_POLYANET} ${index}`);
         }
       });
-      setIsCreateButtonLoading(false);
       onCompletion();
 
       return { success: SUCCESS_CREATE_POLYANET };
     } catch (error) {
-      setIsCreateButtonLoading(false);
       console.error(error);
     }
   };
 
   const createPolyanetsPhase1 = async (onCompletion: () => void) => {
-    setIsCreateButtonLoading(true);
     const posList = getPolyanetPositions();
     return createPolyanets(posList, onCompletion);
   };
 
   const deletePolyanets = async (onCompletion: () => void) => {
-    setIsDeleteButtonLoading(true);
     const posList = getAllMapPositionsPhase1();
     const promises = posList.map((pos: Position) => {
       return fetch(DELETE_POLYANET, {
@@ -108,11 +99,9 @@ export const usePolyanets = () => {
         }
       });
 
-      setIsDeleteButtonLoading(false);
       onCompletion();
       return { success: SUCCESS_DELETE_POLYANET };
     } catch (error) {
-      setIsDeleteButtonLoading(false);
       console.error(error);
     }
   };
@@ -121,7 +110,5 @@ export const usePolyanets = () => {
     createPolyanetsPhase1,
     createPolyanets,
     deletePolyanets,
-    isCreateLoading: isCreatePhase1Loading,
-    isDeleteLoading: isDeletePhase1Loading,
   };
 };

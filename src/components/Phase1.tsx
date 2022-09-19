@@ -1,4 +1,5 @@
 import styles from "../../styles/Home.module.css";
+import { useLoading } from "../hooks/useLoading";
 import { usePolyanets } from "../hooks/usePolyanets";
 import { CustomButton } from "../UI/CustomButton";
 import { CustomLoadingButton } from "../UI/CustomLoadingButton";
@@ -10,17 +11,25 @@ export const Phase1 = ({
   getMyMap: () => Promise<void>;
   setSuccessInfo: React.Dispatch<React.SetStateAction<string>>;
 }) => {
+  const { createPolyanetsPhase1, deletePolyanets } = usePolyanets();
+
   const {
-    createPolyanetsPhase1,
-    deletePolyanets,
-    isCreateLoading: isCreateLoadingPhase1,
-    isDeleteLoading: isDeleteLoadingPhase1,
-  } = usePolyanets();
+    isLoading: isCreateButtonLoading,
+    setIsLoading: setIsCreateButtonLoading,
+  } = useLoading();
+
+  const {
+    isLoading: isResetMapButtonLoading,
+    setIsLoading: setIsResetMapButtonLoading,
+  } = useLoading();
 
   const handleCreate = async () => {
+    setIsCreateButtonLoading(true);
     const result = await createPolyanetsPhase1(() => {
       getMyMap();
     });
+
+    setIsCreateButtonLoading(false);
 
     if (result) {
       setSuccessInfo(result.success);
@@ -28,9 +37,11 @@ export const Phase1 = ({
   };
 
   const handleReset = async () => {
+    setIsResetMapButtonLoading(true);
     const result = await deletePolyanets(() => {
       getMyMap();
     });
+    setIsResetMapButtonLoading(false);
 
     if (result) {
       setSuccessInfo(result.success);
@@ -44,14 +55,14 @@ export const Phase1 = ({
       <br />
       <div>
         <CustomButton
-          isLoading={isCreateLoadingPhase1}
+          isLoading={isCreateButtonLoading}
           title="Create"
           onClick={handleCreate}
         />
       </div>
       <div>
         <CustomButton
-          isLoading={isDeleteLoadingPhase1}
+          isLoading={isResetMapButtonLoading}
           title="Reset Map"
           onClick={handleReset}
         />
