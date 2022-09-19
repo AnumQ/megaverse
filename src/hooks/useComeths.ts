@@ -8,6 +8,7 @@ import {
   DOWN_COMETH_TYPE,
   FAILED_CREATE_COMETHS,
   LEFT_COMETH_TYPE,
+  MAP_OBJECT_IS_NULL,
   POST,
   RIGHT_COMETH_TYPE,
   STATUS_FULFILLED,
@@ -206,7 +207,7 @@ export const useComeths = () => {
 
   const getComethMissingPositions = async (positions: Position[]) => {
     const mapObject = await fetchMyMap();
-    if (mapObject === null) return console.error("mapObject is null");
+    if (mapObject === null) return console.error(MAP_OBJECT_IS_NULL);
     const map = mapObject.content;
     const missingPositions: Position[] = [];
     positions.forEach((pos: Position) => {
