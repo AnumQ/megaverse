@@ -154,27 +154,32 @@ export const usePolyanets = () => {
     }
   };
 
+  const getPolyanetsMissingPositions = async (positions: Position[]) => {
+    const mapObject = await fetchMyMap();
+    if (mapObject === null) return console.error(MAP_OBJECT_IS_NULL);
+    const map = mapObject.content;
+    const missingPositions: Position[] = [];
+    positions.forEach((pos: Position) => {
+      const mapPos = map[pos.row][pos.column];
+      if (mapPos === null || (mapPos && mapPos.type !== 0)) {
+        missingPositions.push(pos);
+      }
+    });
+
+    return missingPositions;
+  };
+
   const createPolyanetsRecursively = async (
-    polyPositions: Position[],
+    positions: Position[],
     getMyMap: () => void,
     setIsCreateButtonLoading: any,
     setSuccessInfo: any
   ) => {
-    const result = await createPolyanets(polyPositions, async () => {
+    const result = await createPolyanets(positions, async () => {
       getMyMap();
-      const mapObject = await fetchMyMap();
-      if (mapObject === null) return console.error(MAP_OBJECT_IS_NULL);
-      const map = mapObject.content;
-      const missingPositions: Position[] = [];
-      polyPositions.forEach((pos: Position) => {
-        const mapPos = map[pos.row][pos.column];
+      const missingPositions = await getPolyanetsMissingPositions(positions);
 
-        if (mapPos === null || (mapPos && mapPos.type !== 0)) {
-          missingPositions.push(pos);
-        }
-      });
-
-      if (missingPositions.length > 0) {
+      if (missingPositions && missingPositions.length > 0) {
         console.log(POLYANETS_MESSAGE);
         createPolyanetsRecursively(
           missingPositions,
