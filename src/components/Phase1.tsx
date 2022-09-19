@@ -1,6 +1,6 @@
 import styles from "../../styles/Home.module.css";
 import { usePolyanets } from "../hooks/usePolyanets";
-import Button from "@mui/material/Button";
+import { CustomButton } from "../UI/CustomButton";
 import { CustomLoadingButton } from "../UI/CustomLoadingButton";
 
 export const Phase1 = ({
@@ -16,18 +16,6 @@ export const Phase1 = ({
     isCreateLoading: isCreateLoadingPhase1,
     isDeleteLoading: isDeleteLoadingPhase1,
   } = usePolyanets();
-
-  const CustomButton = ({
-    title,
-    onClick,
-  }: {
-    title: string;
-    onClick: () => void;
-  }) => (
-    <Button variant="outlined" onClick={onClick}>
-      {title}
-    </Button>
-  );
 
   const handleCreate = async () => {
     const result = await createPolyanetsPhase1(() => {
