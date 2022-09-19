@@ -3,9 +3,9 @@ export const BASE_URL = "https://challenge.crossmint.io/api";
 export const MAP = "map";
 export const POLYANETS = "polyanets";
 export const COMETHS = "comeths";
+export const SOLOONS = "soloons";
 
 export const CREATE_POLYANET = "/api/polyanet/create";
-export const CREATE_COMETH = "/api/cometh/create";
 export const POST = "POST";
 export const STATUS_FULFILLED = "fulfilled";
 export const FAILED_CREATE_POLYANET = "Failed to create polyanet at index: ";
@@ -15,10 +15,17 @@ export const DELETE_POLYANET = "/api/polyanet/delete";
 export const FAILED_DELETE_POLYANET = "Failed to delete polyanet at index: ";
 export const SUCCESS_DELETE_POLYANET = "Successfully deleted polyanets.";
 
+export const CREATE_COMETH = "/api/cometh/create";
 export const FAILED_CREATE_COMETHS = "Failed to create cometh at index: ";
 export const SUCCESS_CREATE_COMETHS = "Successfully create cometh.";
 export const FAILED_DELETE_COMETHS = "Failed to delete cometh at index: ";
 export const SUCCESS_DELETE_COMETHS = "Successfully deleted cometh.";
+
+export const CREATE_SOLOON = "api/soloon/create";
+export const FAILED_CREATE_SOLOON = "Failed to create soloon at index: ";
+export const SUCCESS_CREATE_SOLOON = "Successfully create soloon.";
+export const FAILED_DELETE_SOLOON = "Failed to delete soloon at index: ";
+export const SUCCESS_DELETE_SOLOON = "Successfully deleted soloon.";
 
 /* USER */
 export const CANDIDATE_ID = "ffdba451-a8a7-43eb-a3fd-0231efd01071";
