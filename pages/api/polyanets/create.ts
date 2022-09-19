@@ -1,16 +1,13 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-
-const BASE_URL_LOCAL = "https://challenge.crossmint.io/api";
-const POLYANET = "polyanets";
-const CANDIDATE_ID = "ffdba451-a8a7-43eb-a3fd-0231efd01071";
+import { BASE_URL, POLYANET } from "../../constants";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
-    const response = await fetch(`${BASE_URL_LOCAL}/${POLYANET}`, {
+    const response = await fetch(`${BASE_URL}/${POLYANET}`, {
       method: "POST",
       headers: {
         Accept: "*/*",
