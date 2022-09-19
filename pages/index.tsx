@@ -3,7 +3,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Button from "@mui/material/Button";
 import { useEffect } from "react";
-import { CANDIDATE_ID } from "./constants";
+import { CANDIDATE_ID } from "../src/constants";
 
 type Position = {
   row: string;

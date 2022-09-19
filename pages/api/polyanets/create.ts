@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { BASE_URL, POLYANET } from "../../constants";
+import { BASE_URL, POLYANET } from "../../../src/constants";
 
 export default async function handler(
   req: NextApiRequest,
