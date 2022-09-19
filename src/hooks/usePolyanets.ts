@@ -82,7 +82,7 @@ export const usePolyanets = () => {
   const createPolyanetsPhase1 = async (onCompletion: () => void) => {
     setIsCreateButtonLoading(true);
     const posList = getPolyanetPositions();
-    createPolyanets(posList, onCompletion);
+    return createPolyanets(posList, onCompletion);
   };
 
   const deletePolyanets = async (onCompletion: () => void) => {
@@ -119,6 +119,7 @@ export const usePolyanets = () => {
 
   return {
     createPolyanetsPhase1,
+    createPolyanets,
     deletePolyanets,
     isCreateLoading,
     isDeleteLoading,

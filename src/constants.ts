@@ -15,3 +15,6 @@ export const SUCCESS_DELETE_POLYANET = "Successfully deleted polyanets.";
 
 /* USER */
 export const CANDIDATE_ID = "ffdba451-a8a7-43eb-a3fd-0231efd01071";
+
+/* Megaverse */
+export const POLYANET_TYPE = "POLYANET";

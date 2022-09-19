@@ -10,6 +10,9 @@ import Alert from "@mui/material/Alert";
 import { GoalMap } from "../src/UI/Goal";
 import { MyMap } from "../src/UI/MyMap";
 import { Position } from "../src/Model/Position";
+import { POLYANET_TYPE } from "../src/constants";
+import _ from "lodash";
+import { Phase1 } from "../src/components/Phase1";
 
 const Home: NextPage = () => {
   // variables, states
@@ -21,6 +24,7 @@ const Home: NextPage = () => {
   // functions, variables from hooks
   const {
     createPolyanetsPhase1,
+    createPolyanets,
     deletePolyanets,
     isCreateLoading: isCreateLoadingPhase1,
     isDeleteLoading: isDeleteLoadingPhase1,
@@ -32,12 +36,12 @@ const Home: NextPage = () => {
   };
   const logoDataList: LogoItem[] = [];
 
-  const createLogo = () => {
+  const createLogo = async () => {
     if (goalMap.length > 0) {
       goalMap.forEach((row: string[], rowIndex: number) => {
         row.forEach((col: string, colIndex: number) => {
           if (col !== "SPACE") {
-            console.log(`Type: ${col} - Pos: ${rowIndex}, ${colIndex}`);
+            // console.log(`Type: ${col} - Pos: ${rowIndex}, ${colIndex}`);
 
             const logoItem = {
               position: {
@@ -53,13 +57,40 @@ const Home: NextPage = () => {
       });
     }
 
-    console.log("logoDataList");
-    console.log(logoDataList);
+    // console.log("logoDataList");
+    // console.log(logoDataList);
 
     // use this list to create a list of promnise calls
-    logoDataList.forEach((logoItem) => {
-      console.log(logoItem.type);
-    });
+
+    const polyPositions = _.compact(
+      logoDataList.map((logoItem) =>
+        logoItem.type === POLYANET_TYPE ? logoItem.position : null
+      )
+    );
+
+    console.log(polyPositions);
+
+    try {
+      const result = await createPolyanets(polyPositions, () => {
+        getMyMap();
+      });
+
+      if (result) {
+        setSuccessInfo(result?.success);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    // logoDataList.forEach((logoItem) => {
+    //   // console.log(logoItem.type);
+
+    //   if (logoItem.type === POLYANET_TYPE) {
+    //     polyanetsPositions.push(logoItem.position);
+    //   }
+    // });
+
+    // console.log("polyanetsPositions");
+    // console.log(polyanetsPositions);
   };
   const { fetchMap: fetchGoalMap, fetchMyMap } = useMap();
 
@@ -79,66 +110,6 @@ const Home: NextPage = () => {
     getGoalMap();
     getMyMap();
   }, []);
-
-  const Phase1 = () => (
-    <div className={styles.card}>
-      <h2>Phase1</h2>
-      <p>Polyanet Cross 🪐 🪐 Click the button below 🪐 🪐 </p>
-      <br />
-      <div>
-        {isCreateLoadingPhase1 ? (
-          <LoadingButton
-            loading={isCreateLoadingPhase1}
-            loadingIndicator="Loading…"
-            variant="outlined"
-          >
-            Loading ...
-          </LoadingButton>
-        ) : (
-          <Button
-            variant="outlined"
-            onClick={async () => {
-              const result = await createPolyanetsPhase1(() => {
-                getMyMap();
-              });
-
-              if (result) {
-                setSuccessInfo(result.success);
-              }
-            }}
-          >
-            Create
-          </Button>
-        )}
-      </div>
-      <div>
-        {isDeleteLoadingPhase1 ? (
-          <LoadingButton
-            loading={isDeleteLoadingPhase1}
-            loadingIndicator="Loading…"
-            variant="outlined"
-          >
-            Loading ...
-          </LoadingButton>
-        ) : (
-          <Button
-            variant="outlined"
-            onClick={async () => {
-              const result = await deletePolyanets(() => {
-                getMyMap();
-              });
-
-              if (result) {
-                setSuccessInfo(result.success);
-              }
-            }}
-          >
-            Reset Map
-          </Button>
-        )}
-      </div>
-    </div>
-  );
 
   const Phase2 = () => (
     <div className={styles.card}>
@@ -171,7 +142,7 @@ const Home: NextPage = () => {
         <h3 className={styles.subtitle}>Completed by Anum</h3>
 
         <div className={styles.grid}>
-          <Phase1 />
+          <Phase1 getMyMap={getMyMap} setSuccessInfo={setSuccessInfo} />
           <Phase2 />
         </div>
 
