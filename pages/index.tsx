@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Button from "@mui/material/Button";
+import { useEffect } from "react";
 
 type Position = {
   row: string;
@@ -9,11 +10,13 @@ type Position = {
 };
 const Home: NextPage = () => {
   const CANDIDATE_ID = "ffdba451-a8a7-43eb-a3fd-0231efd01071";
-  const rowsNumber = 11;
-  const columnsNumber = 11;
-  const rows = Array.from(Array(rowsNumber).keys());
-  const cols = Array.from(Array(columnsNumber).keys());
+  const rowsNumberPhase1 = 11;
+  const columnsNumberPhase1 = 11;
+  const rows = Array.from(Array(rowsNumberPhase1).keys());
+  const cols = Array.from(Array(columnsNumberPhase1).keys());
   let positions: Position[] = [];
+  const startRow = 2;
+  const startColumn = 2;
 
   rows.forEach((row) => {
     cols.forEach((col) => {
@@ -25,10 +28,11 @@ const Home: NextPage = () => {
   const createPolyanet = async () => {
     positions = [];
 
+    const stopRow = rowsNumberPhase1 - startRow;
     rows.forEach((row) => {
-      if (row > 1 && row < 9) {
+      if (row >= startRow && row <= stopRow) {
         cols.forEach((col) => {
-          if (col > 1 && col < 9) {
+          if (col >= startRow && col <= stopRow) {
             const pos1: Position = { row: `${row}`, column: `${col}` };
             if (col === row) {
               positions.push(pos1);
@@ -91,6 +95,25 @@ const Home: NextPage = () => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    console.log("get map");
+
+    async function fetchMap() {
+      try {
+        const res = await fetch("/api/map", {
+          method: "GET",
+        });
+
+        const json = await res.json();
+        console.log(json);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchMap();
+  }, []);
+
   return (
     <div className={styles.container}>
       <Head>
