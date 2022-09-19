@@ -38,7 +38,6 @@ export const useMap = () => {
         method: "GET",
       });
       const json = await res.json();
-      console.log(json.goal);
       return json.goal;
     } catch (error) {
       console.error(error);

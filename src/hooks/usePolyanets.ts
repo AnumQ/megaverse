@@ -47,9 +47,10 @@ export const usePolyanets = () => {
     return posList;
   };
 
-  const createPolyanets = async (onCompletion: () => void) => {
-    setIsCreateButtonLoading(true);
-    const posList = getPolyanetPositions();
+  const createPolyanets = async (
+    posList: Position[],
+    onCompletion: () => void
+  ) => {
     const promises = posList.map((pos) => {
       return fetch(CREATE_POLYANET, {
         method: POST,
@@ -69,7 +70,6 @@ export const usePolyanets = () => {
         }
       });
       setIsCreateButtonLoading(false);
-      console.log(SUCCESS_CREATE_POLYANET);
       onCompletion();
 
       return { success: SUCCESS_CREATE_POLYANET };
@@ -77,6 +77,12 @@ export const usePolyanets = () => {
       setIsCreateButtonLoading(false);
       console.error(error);
     }
+  };
+
+  const createPolyanetsPhase1 = async (onCompletion: () => void) => {
+    setIsCreateButtonLoading(true);
+    const posList = getPolyanetPositions();
+    createPolyanets(posList, onCompletion);
   };
 
   const deletePolyanets = async (onCompletion: () => void) => {
@@ -102,7 +108,6 @@ export const usePolyanets = () => {
         }
       });
 
-      console.log(SUCCESS_DELETE_POLYANET);
       setIsDeleteButtonLoading(false);
       onCompletion();
       return { success: SUCCESS_DELETE_POLYANET };
@@ -112,5 +117,10 @@ export const usePolyanets = () => {
     }
   };
 
-  return { createPolyanets, deletePolyanets, isCreateLoading, isDeleteLoading };
+  return {
+    createPolyanetsPhase1,
+    deletePolyanets,
+    isCreateLoading,
+    isDeleteLoading,
+  };
 };

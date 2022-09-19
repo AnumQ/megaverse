@@ -7,23 +7,60 @@ import { usePolyanets } from "../src/hooks/usePolyanets";
 import { useMap } from "../src/hooks/useMap";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Alert from "@mui/material/Alert";
-import { drawGoalMap, GoalMap } from "../src/UI/Goal";
-import { drawMyMap, MyMap } from "../src/UI/MyMap";
+import { GoalMap } from "../src/UI/Goal";
+import { MyMap } from "../src/UI/MyMap";
+import { Position } from "../src/Model/Position";
 
 const Home: NextPage = () => {
   // variables, states
-  const [goal, setGoal] = useState<[]>([]);
-  const [map, setMap] = useState<[]>([]);
+  const [goalMap, setGoal] = useState<[]>([]);
+  const [myMap, setMap] = useState<[]>([]);
 
   const [successInfo, setSuccessInfo] = useState("");
 
   // functions, variables from hooks
   const {
-    createPolyanets,
+    createPolyanetsPhase1,
     deletePolyanets,
     isCreateLoading: isCreateLoadingPhase1,
     isDeleteLoading: isDeleteLoadingPhase1,
   } = usePolyanets();
+
+  type LogoItem = {
+    position: Position;
+    type: string;
+  };
+  const logoDataList: LogoItem[] = [];
+
+  const createLogo = () => {
+    if (goalMap.length > 0) {
+      goalMap.forEach((row: string[], rowIndex: number) => {
+        row.forEach((col: string, colIndex: number) => {
+          if (col !== "SPACE") {
+            console.log(`Type: ${col} - Pos: ${rowIndex}, ${colIndex}`);
+
+            const logoItem = {
+              position: {
+                row: rowIndex.toString(),
+                column: colIndex.toString(),
+              },
+              type: col,
+            };
+
+            logoDataList.push(logoItem);
+          }
+        });
+      });
+    }
+
+    console.log("logoDataList");
+    console.log(logoDataList);
+
+    // use this list to create a list of promnise calls
+    logoDataList.forEach((logoItem) => {
+      console.log(logoItem.type);
+    });
+  };
   const { fetchMap: fetchGoalMap, fetchMyMap } = useMap();
 
   // async functions
@@ -34,7 +71,6 @@ const Home: NextPage = () => {
 
   async function getMyMap() {
     const myMap = await fetchMyMap();
-    console.log(myMap.content);
     setMap(myMap.content);
   }
 
@@ -43,6 +79,84 @@ const Home: NextPage = () => {
     getGoalMap();
     getMyMap();
   }, []);
+
+  const Phase1 = () => (
+    <div className={styles.card}>
+      <h2>Phase1</h2>
+      <p>Polyanet Cross 🪐 🪐 Click the button below 🪐 🪐 </p>
+      <br />
+      <div>
+        {isCreateLoadingPhase1 ? (
+          <LoadingButton
+            loading={isCreateLoadingPhase1}
+            loadingIndicator="Loading…"
+            variant="outlined"
+          >
+            Loading ...
+          </LoadingButton>
+        ) : (
+          <Button
+            variant="outlined"
+            onClick={async () => {
+              const result = await createPolyanetsPhase1(() => {
+                getMyMap();
+              });
+
+              if (result) {
+                setSuccessInfo(result.success);
+              }
+            }}
+          >
+            Create
+          </Button>
+        )}
+      </div>
+      <div>
+        {isDeleteLoadingPhase1 ? (
+          <LoadingButton
+            loading={isDeleteLoadingPhase1}
+            loadingIndicator="Loading…"
+            variant="outlined"
+          >
+            Loading ...
+          </LoadingButton>
+        ) : (
+          <Button
+            variant="outlined"
+            onClick={async () => {
+              const result = await deletePolyanets(() => {
+                getMyMap();
+              });
+
+              if (result) {
+                setSuccessInfo(result.success);
+              }
+            }}
+          >
+            Reset Map
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+
+  const Phase2 = () => (
+    <div className={styles.card}>
+      <h2>Phase 2</h2>
+      <p>Crossmint logo. With 🌙SOLoons and ☄comETHs!</p>
+      <br />
+      <div>
+        <Button variant="outlined" onClick={createLogo}>
+          Create
+        </Button>
+      </div>
+      <div>
+        <Button variant="outlined" onClick={() => {}}>
+          Reset Map
+        </Button>
+      </div>
+    </div>
+  );
 
   return (
     <div className={styles.container}>
@@ -57,78 +171,8 @@ const Home: NextPage = () => {
         <h3 className={styles.subtitle}>Completed by Anum</h3>
 
         <div className={styles.grid}>
-          <div className={styles.card}>
-            <h2>Phase1</h2>
-            <p>Polyanet Cross 🪐 🪐 Click the button below 🪐 🪐 </p>
-            <br />
-            <div>
-              {isCreateLoadingPhase1 ? (
-                <LoadingButton
-                  loading={isCreateLoadingPhase1}
-                  loadingIndicator="Loading…"
-                  variant="outlined"
-                >
-                  Loading ...
-                </LoadingButton>
-              ) : (
-                <Button
-                  variant="outlined"
-                  onClick={async () => {
-                    const result = await createPolyanets(() => {
-                      getMyMap();
-                    });
-
-                    if (result) {
-                      setSuccessInfo(result.success);
-                    }
-                  }}
-                >
-                  Create
-                </Button>
-              )}
-            </div>
-            <div>
-              {isDeleteLoadingPhase1 ? (
-                <LoadingButton
-                  loading={isDeleteLoadingPhase1}
-                  loadingIndicator="Loading…"
-                  variant="outlined"
-                >
-                  Loading ...
-                </LoadingButton>
-              ) : (
-                <Button
-                  variant="outlined"
-                  onClick={async () => {
-                    const result = await deletePolyanets(() => {
-                      getMyMap();
-                    });
-
-                    if (result) {
-                      setSuccessInfo(result.success);
-                    }
-                  }}
-                >
-                  Reset Map
-                </Button>
-              )}
-            </div>
-          </div>
-          <div className={styles.card}>
-            <h2>Phase 2</h2>
-            <p>Crossmint logo. With 🌙SOLoons and ☄comETHs!</p>
-            <br />
-            <div>
-              <Button variant="outlined" onClick={() => {}}>
-                Create
-              </Button>
-            </div>
-            <div>
-              <Button variant="outlined" onClick={() => {}}>
-                Reset Map
-              </Button>
-            </div>
-          </div>
+          <Phase1 />
+          <Phase2 />
         </div>
 
         {successInfo ? (
@@ -141,8 +185,8 @@ const Home: NextPage = () => {
           <></>
         )}
         <div className={styles.inline}>
-          <GoalMap goal={goal} />
-          <MyMap myMap={map} getMyMap={getMyMap} />
+          <GoalMap goal={goalMap} />
+          <MyMap myMap={myMap} getMyMap={getMyMap} />
         </div>
       </main>
 
