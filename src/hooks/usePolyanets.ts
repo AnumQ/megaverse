@@ -1,29 +1,25 @@
 import {
   CANDIDATE_ID,
-  CREATE_COMETH,
   CREATE_POLYANET,
   DELETE_POLYANET,
-  FAILED_CREATE_COMETHS,
   FAILED_CREATE_POLYANET,
   FAILED_DELETE_POLYANET,
   POST,
   STATUS_FULFILLED,
-  SUCCESS_CREATE_COMETHS,
   SUCCESS_CREATE_POLYANET,
   SUCCESS_DELETE_POLYANET,
 } from "../constants";
 import { Position } from "../Model/Position";
 import { useMap } from "./useMap";
 
-const rowsNumberPhase1 = 11;
-const columnsNumberPhase1 = 11;
-const rows = Array.from(Array(rowsNumberPhase1).keys());
-const cols = Array.from(Array(columnsNumberPhase1).keys());
-
 export const usePolyanets = () => {
-  const { getAllMapPositionsPhase1 } = useMap();
-
+  const rowsNumberPhase1 = 11;
+  const columnsNumberPhase1 = 11;
+  const rows = Array.from(Array(rowsNumberPhase1).keys());
+  const cols = Array.from(Array(columnsNumberPhase1).keys());
   const startRow = 2;
+
+  const { getAllMapPositionsPhase1 } = useMap();
 
   const getPolyanetPositionsPhase1 = () => {
     const posList: Position[] = [];
