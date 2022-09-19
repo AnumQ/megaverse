@@ -32,7 +32,7 @@ export const Phase2 = ({
   setSuccessInfo: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const { createPolyanets, deletePolyanetsPhase2 } = usePolyanets();
-  const { fetchMap: fetchGoalMap, fetchMyMap } = useMap();
+  const { fetchMyMap } = useMap();
   const { createComeths } = useComeths();
   const {
     isLoading: isCreateButtonLoading,
@@ -165,8 +165,6 @@ export const Phase2 = ({
       goalMap.forEach((row: string[], rowIndex: number) => {
         row.forEach((col: string, colIndex: number) => {
           if (col !== SPACE) {
-            // console.log(`Type: ${col} - Pos: ${rowIndex}, ${colIndex}`);
-
             const logoItem = {
               position: {
                 row: rowIndex.toString(),

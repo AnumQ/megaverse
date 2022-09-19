@@ -4,14 +4,14 @@ export const MAP = "map";
 export const POLYANETS = "polyanets";
 export const COMETHS = "comeths";
 
-export const CREATE_POLYANET = "/api/polyanets/create";
+export const CREATE_POLYANET = "/api/polyanet/create";
 export const CREATE_COMETH = "/api/cometh/create";
 export const POST = "POST";
 export const STATUS_FULFILLED = "fulfilled";
 export const FAILED_CREATE_POLYANET = "Failed to create polyanet at index: ";
 export const SUCCESS_CREATE_POLYANET = "Successfully created polyanets.";
 
-export const DELETE_POLYANET = "/api/polyanets/delete";
+export const DELETE_POLYANET = "/api/polyanet/delete";
 export const FAILED_DELETE_POLYANET = "Failed to delete polyanet at index: ";
 export const SUCCESS_DELETE_POLYANET = "Successfully deleted polyanets.";
 
