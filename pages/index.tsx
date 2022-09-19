@@ -6,13 +6,18 @@ import { useEffect, useState } from "react";
 import { usePolyanets } from "../src/hooks/usePolyanets";
 import { useMap } from "../src/hooks/useMap";
 import { getEmojiFromObject, getEmojiFromString } from "../src/UI/Emoji";
+import LoadingButton from "@mui/lab/LoadingButton";
+import Alert from "@mui/material/Alert";
 
 const Home: NextPage = () => {
-  const { createPolyanets, deletePolyanets } = usePolyanets();
+  const { createPolyanets, deletePolyanets, isCreateLoading: isCreateLoadingPhase1, isDeleteLoading: isDeleteLoadingPhase1 } =
+    usePolyanets();
   const { fetchMap: fetchGoalMap, fetchMyMap } = useMap();
 
   const [goal, setGoal] = useState<[]>([]);
   const [map, setMap] = useState<[]>([]);
+
+  const [successInfo, setSuccessInfo] = useState("");
 
   async function getGoalMap() {
     const goalMap = await fetchGoalMap();
@@ -111,28 +116,56 @@ const Home: NextPage = () => {
             <p>Polyanet Cross 🪐 🪐 Click the button below 🪐 🪐 </p>
             <br />
             <div>
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  createPolyanets(() => {
-                    getMyMap();
-                  });
-                }}
-              >
-                Create
-              </Button>
+              {isCreateLoadingPhase1 ? (
+                <LoadingButton
+                  loading={isCreateLoadingPhase1}
+                  loadingIndicator="Loading…"
+                  variant="outlined"
+                >
+                  Loading ...
+                </LoadingButton>
+              ) : (
+                <Button
+                  variant="outlined"
+                  onClick={async () => {
+                    const result = await createPolyanets(() => {
+                      getMyMap();
+                    });
+
+                    if (result) {
+                      setSuccessInfo(result.success);
+                    }
+                  }}
+                >
+                  Create
+                </Button>
+              )}
             </div>
             <div>
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  deletePolyanets(() => {
-                    getMyMap();
-                  });
-                }}
-              >
-                Reset Map
-              </Button>
+              {isDeleteLoadingPhase1 ? (
+                <LoadingButton
+                  loading={isDeleteLoadingPhase1}
+                  loadingIndicator="Loading…"
+                  variant="outlined"
+                >
+                  Loading ...
+                </LoadingButton>
+              ) : (
+                <Button
+                  variant="outlined"
+                  onClick={async () => {
+                    const result = await deletePolyanets(() => {
+                      getMyMap();
+                    });
+
+                    if (result) {
+                      setSuccessInfo(result.success);
+                    }
+                  }}
+                >
+                  Reset Map
+                </Button>
+              )}
             </div>
           </div>
           <div className={styles.card}>
@@ -151,6 +184,16 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
+
+        {successInfo ? (
+          <>
+            <Alert variant="outlined" severity="success">
+              {successInfo}
+            </Alert>
+          </>
+        ) : (
+          <></>
+        )}
         <div className={styles.inline}>
           <GoalMap />
           <MyMap />

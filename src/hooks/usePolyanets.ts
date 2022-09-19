@@ -9,12 +9,9 @@ import {
   SUCCESS_CREATE_POLYANET,
   SUCCESS_DELETE_POLYANET,
 } from "../constants";
+import { Position } from "../Model/Position";
+import { useLoading } from "./useLoading";
 import { useMap } from "./useMap";
-
-type Position = {
-  row: string;
-  column: string;
-};
 
 const rowsNumberPhase1 = 11;
 const columnsNumberPhase1 = 11;
@@ -22,6 +19,10 @@ const rows = Array.from(Array(rowsNumberPhase1).keys());
 const cols = Array.from(Array(columnsNumberPhase1).keys());
 
 export const usePolyanets = () => {
+  const { isLoading: isCreateLoading, setIsLoading: setIsCreateButtonLoading } =
+    useLoading();
+  const { isLoading: isDeleteLoading, setIsLoading: setIsDeleteButtonLoading } =
+    useLoading();
   const { getAllMapPositionsPhase1 } = useMap();
 
   const startRow = 2;
@@ -47,6 +48,7 @@ export const usePolyanets = () => {
   };
 
   const createPolyanets = async (onCompletion: () => void) => {
+    setIsCreateButtonLoading(true);
     const posList = getPolyanetPositions();
     const promises = posList.map((pos) => {
       return fetch(CREATE_POLYANET, {
@@ -66,14 +68,19 @@ export const usePolyanets = () => {
           console.log(`${FAILED_CREATE_POLYANET} ${index}`);
         }
       });
+      setIsCreateButtonLoading(false);
       console.log(SUCCESS_CREATE_POLYANET);
       onCompletion();
+
+      return { success: SUCCESS_CREATE_POLYANET };
     } catch (error) {
+      setIsCreateButtonLoading(false);
       console.error(error);
     }
   };
 
   const deletePolyanets = async (onCompletion: () => void) => {
+    setIsDeleteButtonLoading(true);
     const posList = getAllMapPositionsPhase1();
     const promises = posList.map((pos: Position) => {
       return fetch(DELETE_POLYANET, {
@@ -96,11 +103,14 @@ export const usePolyanets = () => {
       });
 
       console.log(SUCCESS_DELETE_POLYANET);
+      setIsDeleteButtonLoading(false);
       onCompletion();
+      return { success: SUCCESS_DELETE_POLYANET };
     } catch (error) {
+      setIsDeleteButtonLoading(false);
       console.error(error);
     }
   };
 
-  return { createPolyanets, deletePolyanets };
+  return { createPolyanets, deletePolyanets, isCreateLoading, isDeleteLoading };
 };
