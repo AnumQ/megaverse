@@ -1,5 +1,5 @@
 import styles from "../../styles/Home.module.css";
-import { SPACE } from "../constants";
+import { BLUE, PURPLE, RED, SPACE, WHITE } from "../constants";
 import { useLoading } from "../hooks/useLoading";
 import { usePolyanets } from "../hooks/usePolyanets";
 import { LogoItem } from "../Model/LogoItem";
@@ -7,6 +7,7 @@ import { CustomButton } from "../UI/CustomButton";
 import _ from "lodash";
 import { useMap } from "../hooks/useMap";
 import { useComeths } from "../hooks/useComeths";
+import { useSoloons } from "../hooks/useSoloons";
 
 export const Phase2 = ({
   myMap,
@@ -21,7 +22,13 @@ export const Phase2 = ({
 }) => {
   const { createPolyanetsInLogo, deletePolyanetsPhase2 } = usePolyanets();
   const { fetchMyMap } = useMap();
-  const { createRightComethsInLogo } = useComeths();
+  const {
+    createRightComethsInLogo,
+    createUpComethsInLogo,
+    createDownComethsInLogo,
+    createLeftComethsInLogo,
+  } = useComeths();
+  const { createSoloonsInLogo } = useSoloons();
   const {
     isLoading: isCreateButtonLoading,
     setIsLoading: setIsCreateButtonLoading,
@@ -55,13 +62,69 @@ export const Phase2 = ({
       });
     }
 
-    // createPolyanetsInLogo();
-    // createRightComethsInLogo(
-    //   logoDataList,
-    //   getMyMap,
-    //   setIsCreateButtonLoading,
-    //   setSuccessInfo
-    // );
+    //polyanet
+    createPolyanetsInLogo(
+      logoDataList,
+      getMyMap,
+      setIsCreateButtonLoading,
+      setSuccessInfo
+    );
+
+    // comeths
+    createUpComethsInLogo(
+      logoDataList,
+      getMyMap,
+      setIsCreateButtonLoading,
+      setSuccessInfo
+    );
+    createLeftComethsInLogo(
+      logoDataList,
+      getMyMap,
+      setIsCreateButtonLoading,
+      setSuccessInfo
+    );
+    createRightComethsInLogo(
+      logoDataList,
+      getMyMap,
+      setIsCreateButtonLoading,
+      setSuccessInfo
+    );
+    createDownComethsInLogo(
+      logoDataList,
+      getMyMap,
+      setIsCreateButtonLoading,
+      setSuccessInfo
+    );
+
+    // soloons
+    createSoloonsInLogo(
+      logoDataList,
+      getMyMap,
+      setIsCreateButtonLoading,
+      setSuccessInfo,
+      RED
+    );
+    createSoloonsInLogo(
+      logoDataList,
+      getMyMap,
+      setIsCreateButtonLoading,
+      setSuccessInfo,
+      BLUE
+    );
+    createSoloonsInLogo(
+      logoDataList,
+      getMyMap,
+      setIsCreateButtonLoading,
+      setSuccessInfo,
+      WHITE
+    );
+    createSoloonsInLogo(
+      logoDataList,
+      getMyMap,
+      setIsCreateButtonLoading,
+      setSuccessInfo,
+      PURPLE
+    );
   };
 
   const repeatReset = (map: []) => {
@@ -69,9 +132,7 @@ export const Phase2 = ({
     let repeat = false;
     map.forEach((row: string[]) => {
       row.forEach((col: string) => {
-        if (col) {
-          repeat = true;
-        }
+        if (col) repeat = true;
       });
     });
 

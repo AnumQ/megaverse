@@ -8,7 +8,7 @@ import {
   POST,
   STATUS_FULFILLED,
   SUCCESS_CREATE_POLYANET,
-  SUCCESS_DELETE_POLYANET,
+  SUCCESS_DELETED,
 } from "../constants";
 import { Position } from "../Model/Position";
 import { useMap } from "./useMap";
@@ -122,7 +122,7 @@ export const usePolyanets = () => {
       });
 
       onCompletion();
-      return { success: SUCCESS_DELETE_POLYANET };
+      return { success: SUCCESS_DELETED };
     } catch (error) {
       console.error(error);
     }

@@ -20,8 +20,6 @@ export const getEmojiFromString = (el: string) => {
       return "☄️";
     case "RED_SOLOON":
       return "🌕";
-    case "PURPLE_SOLOON":
-      return "🌕";
     default:
       return "🌌";
   }
@@ -35,6 +33,8 @@ export const getEmojiFromObject = (el: { type: number } | null) => {
   switch (el.type) {
     case 0:
       return "🪐";
+    case 1:
+      return "🌕";
     case 2:
       return "☄️";
 
