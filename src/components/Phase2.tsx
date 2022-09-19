@@ -33,7 +33,7 @@ export const Phase2 = ({
 }) => {
   const { createPolyanets, deletePolyanetsPhase2 } = usePolyanets();
   const { fetchMyMap } = useMap();
-  const { createComeths } = useComeths();
+  const { createRightComethsInLogo } = useComeths();
   const {
     isLoading: isCreateButtonLoading,
     setIsLoading: setIsCreateButtonLoading,
@@ -45,118 +45,6 @@ export const Phase2 = ({
   } = useLoading();
 
   const logoDataList: LogoItem[] = [];
-
-  const createPolyanetsRecursively = async (polyPositions: Position[]) => {
-    const result = await createPolyanets(polyPositions, async () => {
-      getMyMap();
-      const mapObject = await fetchMyMap();
-      const map = mapObject.content;
-      const missingPositions: Position[] = [];
-      polyPositions.forEach((pos: Position) => {
-        const mapPos = map[pos.row][pos.column];
-
-        if (mapPos === null || (mapPos && mapPos.type !== 0)) {
-          missingPositions.push(pos);
-        }
-      });
-
-      if (missingPositions.length > 0) {
-        console.log("Creating polyanets that failed in the previous calls");
-        createPolyanetsRecursively(missingPositions);
-      } else {
-        setIsCreateButtonLoading(false);
-
-        if (result) {
-          console.log(result.success);
-          setSuccessInfo(result?.success);
-        }
-      }
-    });
-  };
-
-  const createRightComethsInLogoRecursively = async (positions: Position[]) => {
-    const result = await createComeths(positions, "right", async () => {
-      getMyMap();
-      const missingPositions = await getComethMissingPositions(positions);
-      if (missingPositions.length > 0) {
-        console.log(COMETH_RIGHT_MESSAGE);
-        createRightComethsInLogoRecursively(missingPositions);
-      } else {
-        setIsCreateButtonLoading(false);
-        if (result) {
-          console.log(result.success);
-          setSuccessInfo(result?.success);
-        }
-      }
-    });
-  };
-
-  const createDownComethsInLogoRecursively = async (positions: Position[]) => {
-    const result = await createComeths(positions, "down", async () => {
-      getMyMap();
-      const missingPositions = await getComethMissingPositions(positions);
-      if (missingPositions.length > 0) {
-        console.log(COMETH_DOWN_MESSAGE);
-        createDownComethsInLogoRecursively(missingPositions);
-      } else {
-        setIsCreateButtonLoading(false);
-        if (result) {
-          console.log(result.success);
-          setSuccessInfo(result?.success);
-        }
-      }
-    });
-  };
-
-  const getComethMissingPositions = async (positions: Position[]) => {
-    const mapObject = await fetchMyMap();
-    const map = mapObject.content;
-    const missingPositions: Position[] = [];
-    positions.forEach((pos: Position) => {
-      const mapPos = map[pos.row][pos.column];
-      if (mapPos === null || (mapPos && mapPos.type !== 2)) {
-        missingPositions.push(pos);
-      }
-    });
-
-    return missingPositions;
-  };
-
-  const createLeftComethsInLogoRecursively = async (positions: Position[]) => {
-    const result = await createComeths(positions, "left", async () => {
-      getMyMap();
-
-      const missingPositions = await getComethMissingPositions(positions);
-
-      if (missingPositions.length > 0) {
-        console.log(COMETH_LEFT_MESSAGE);
-        createLeftComethsInLogoRecursively(missingPositions);
-      } else {
-        setIsCreateButtonLoading(false);
-        if (result) {
-          console.log(result.success);
-          setSuccessInfo(result?.success);
-        }
-      }
-    });
-  };
-
-  const createUpComethsInLogoRecursively = async (positions: Position[]) => {
-    const result = await createComeths(positions, "up", async () => {
-      getMyMap();
-      const missingPositions = await getComethMissingPositions(positions);
-      if (missingPositions.length > 0) {
-        console.log(COMETH_UP_MESSAGE);
-        createUpComethsInLogoRecursively(missingPositions);
-      } else {
-        setIsCreateButtonLoading(false);
-        if (result) {
-          console.log(result.success);
-          setSuccessInfo(result?.success);
-        }
-      }
-    });
-  };
 
   const handleCreateLogo = async () => {
     setSuccessInfo("");
@@ -180,80 +68,12 @@ export const Phase2 = ({
     }
 
     // createPolyanetsInLogo();
-    // createRightComethsInLogo();
-    // createLeftComethsInLogo();
-    // createUpComethsInLogo();
-    // createDownComethsInLogo();
-  };
-
-  const createDownComethsInLogo = async () => {
-    const downComethPositions = _.compact(
-      logoDataList.map((logoItem) =>
-        logoItem.type === DOWN_COMETH_TYPE ? logoItem.position : null
-      )
+    createRightComethsInLogo(
+      logoDataList,
+      getMyMap,
+      setIsResetMapButtonLoading,
+      setSuccessInfo
     );
-
-    try {
-      await createDownComethsInLogoRecursively(downComethPositions);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const createRightComethsInLogo = async () => {
-    const rightComethPositions = _.compact(
-      logoDataList.map((logoItem) =>
-        logoItem.type === RIGHT_COMETH_TYPE ? logoItem.position : null
-      )
-    );
-
-    try {
-      await createRightComethsInLogoRecursively(rightComethPositions);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const createLeftComethsInLogo = async () => {
-    const leftComethPositions = _.compact(
-      logoDataList.map((logoItem) =>
-        logoItem.type === LEFT_COMETH_TYPE ? logoItem.position : null
-      )
-    );
-
-    try {
-      await createLeftComethsInLogoRecursively(leftComethPositions);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const createUpComethsInLogo = async () => {
-    const upComethPositions = _.compact(
-      logoDataList.map((logoItem) =>
-        logoItem.type === UP_COMETH_TYPE ? logoItem.position : null
-      )
-    );
-
-    try {
-      await createUpComethsInLogoRecursively(upComethPositions);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const createPolyanetsInLogo = async () => {
-    const polyPositions = _.compact(
-      logoDataList.map((logoItem) =>
-        logoItem.type === POLYANET_TYPE ? logoItem.position : null
-      )
-    );
-
-    try {
-      await createPolyanetsRecursively(polyPositions);
-    } catch (error) {
-      setIsCreateButtonLoading(false);
-      console.error(error);
-    }
   };
 
   const repeatReset = (map: []) => {
@@ -281,6 +101,34 @@ export const Phase2 = ({
         setIsResetMapButtonLoading(false);
         if (result) {
           setSuccessInfo(result.success);
+        }
+      }
+    });
+  };
+
+  const createPolyanetsRecursively = async (polyPositions: Position[]) => {
+    const result = await createPolyanets(polyPositions, async () => {
+      getMyMap();
+      const mapObject = await fetchMyMap();
+      const map = mapObject.content;
+      const missingPositions: Position[] = [];
+      polyPositions.forEach((pos: Position) => {
+        const mapPos = map[pos.row][pos.column];
+
+        if (mapPos === null || (mapPos && mapPos.type !== 0)) {
+          missingPositions.push(pos);
+        }
+      });
+
+      if (missingPositions.length > 0) {
+        console.log("Creating polyanets that failed in the previous calls");
+        createPolyanetsRecursively(missingPositions);
+      } else {
+        setIsCreateButtonLoading(false);
+
+        if (result) {
+          console.log(result.success);
+          setSuccessInfo(result?.success);
         }
       }
     });

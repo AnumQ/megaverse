@@ -17,13 +17,13 @@ export const SUCCESS_DELETE_POLYANET = "Successfully deleted polyanets.";
 
 export const CREATE_COMETH = "/api/cometh/create";
 export const FAILED_CREATE_COMETHS = "Failed to create cometh at index: ";
-export const SUCCESS_CREATE_COMETHS = "Successfully create cometh.";
+export const SUCCESS_CREATE_COMETHS = "Successfully created cometh.";
 export const FAILED_DELETE_COMETHS = "Failed to delete cometh at index: ";
 export const SUCCESS_DELETE_COMETHS = "Successfully deleted cometh.";
 
 export const CREATE_SOLOON = "api/soloon/create";
 export const FAILED_CREATE_SOLOON = "Failed to create soloon at index: ";
-export const SUCCESS_CREATE_SOLOON = "Successfully create soloon.";
+export const SUCCESS_CREATE_SOLOON = "Successfully created soloon.";
 export const FAILED_DELETE_SOLOON = "Failed to delete soloon at index: ";
 export const SUCCESS_DELETE_SOLOON = "Successfully deleted soloon.";
 
