@@ -100,13 +100,13 @@
 }
 
 .pos {
-  margin: 5px;
+  margin: 8px;
 }
 
 .inline {
   display: flex;
   flex-direction: row;
-  gap: 40px;
+  gap: 15px;
   justify-content: space-between;
 }
 

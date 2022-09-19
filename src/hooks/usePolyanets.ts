@@ -120,7 +120,7 @@ export const usePolyanets = () => {
   return {
     createPolyanetsPhase1,
     createPolyanets,
-    // deletePolyanets,
+    deletePolyanets,
     deletePolyanetsPhase1,
     deletePolyanetsPhase2,
   };

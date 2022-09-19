@@ -83,7 +83,7 @@ export const Phase2 = ({
       getMyMap();
     });
 
-    setIsResetMapButtonLoading(false);
+    setIsResetMapButtonLoading(true);
     if (result) {
       setSuccessInfo(result.success);
     }

@@ -2,7 +2,6 @@ import styles from "../../styles/Home.module.css";
 import { useLoading } from "../hooks/useLoading";
 import { usePolyanets } from "../hooks/usePolyanets";
 import { CustomButton } from "../UI/CustomButton";
-import { CustomLoadingButton } from "../UI/CustomLoadingButton";
 
 export const Phase1 = ({
   getMyMap,
