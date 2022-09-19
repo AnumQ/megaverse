@@ -1,23 +1,11 @@
 import styles from "../../styles/Home.module.css";
-import {
-  COMETH_DOWN_MESSAGE,
-  COMETH_LEFT_MESSAGE,
-  COMETH_RIGHT_MESSAGE,
-  COMETH_UP_MESSAGE,
-  DOWN_COMETH_TYPE,
-  LEFT_COMETH_TYPE,
-  POLYANET_TYPE,
-  RIGHT_COMETH_TYPE,
-  SPACE,
-  UP_COMETH_TYPE,
-} from "../constants";
+import { SPACE } from "../constants";
 import { useLoading } from "../hooks/useLoading";
 import { usePolyanets } from "../hooks/usePolyanets";
 import { LogoItem } from "../Model/LogoItem";
 import { CustomButton } from "../UI/CustomButton";
 import _ from "lodash";
 import { useMap } from "../hooks/useMap";
-import { Position } from "../Model/Position";
 import { useComeths } from "../hooks/useComeths";
 
 export const Phase2 = ({
@@ -68,12 +56,12 @@ export const Phase2 = ({
     }
 
     // createPolyanetsInLogo();
-    createRightComethsInLogo(
-      logoDataList,
-      getMyMap,
-      setIsCreateButtonLoading,
-      setSuccessInfo
-    );
+    // createRightComethsInLogo(
+    //   logoDataList,
+    //   getMyMap,
+    //   setIsCreateButtonLoading,
+    //   setSuccessInfo
+    // );
   };
 
   const repeatReset = (map: []) => {

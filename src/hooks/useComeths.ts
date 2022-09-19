@@ -158,11 +158,8 @@ export const useComeths = () => {
       getMyMap();
       const missingPositions = await getComethMissingPositions(positions);
 
-      console.log("Line 161");
       if (missingPositions.length > 0) {
         console.log(COMETH_RIGHT_MESSAGE);
-
-        console.log("Line 165");
 
         createRightComethsInLogoRecursively(
           missingPositions,
@@ -171,8 +168,6 @@ export const useComeths = () => {
           setSuccessInfo
         );
       } else {
-        console.log("Line 175");
-
         setIsCreateButtonLoading(false);
         if (result) {
           console.log(result.success);
