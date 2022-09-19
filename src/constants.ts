@@ -50,6 +50,9 @@ export const PURPLE = "purple";
 export const BLUE = "blue";
 export const WHITE = "white";
 
+export const POLYANETS_MESSAGE =
+  "Creating polyanets that failed in the previous calls";
+
 export const COMETH_UP_MESSAGE =
   "Creating up comeths positions that failed in the previous calls";
 export const COMETH_LEFT_MESSAGE =
@@ -67,3 +70,5 @@ export const SOLOON_BLUE_MESSAGE =
   "Creating blue soloon  positions that failed in the previous calls";
 export const SOLOON_PURPLE_MESSAGE =
   "Creating purple soloon  positions that failed in the previous calls";
+
+export const MAP_OBJECT_IS_NULL = "mapObject is null";

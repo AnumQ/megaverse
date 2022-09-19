@@ -44,7 +44,7 @@ export const Phase2 = ({
   const handleCreateLogo = async () => {
     setSuccessInfo("");
     setIsCreateButtonLoading(true);
-    if (goalMap.length > 0) {
+    if (goalMap && goalMap.length > 0) {
       goalMap.forEach((row: string[], rowIndex: number) => {
         row.forEach((col: string, colIndex: number) => {
           if (col !== SPACE) {
@@ -144,6 +144,7 @@ export const Phase2 = ({
     const result = await deletePolyanetsPhase2(myMap, async () => {
       getMyMap();
       const map = await fetchMyMap();
+      if (map === null) console.error("Map is null");
       if (repeatReset(map.content)) {
         handleReset();
       } else {

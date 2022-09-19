@@ -158,7 +158,7 @@ export const useComeths = () => {
       getMyMap();
       const missingPositions = await getComethMissingPositions(positions);
 
-      if (missingPositions.length > 0) {
+      if (missingPositions && missingPositions.length > 0) {
         console.log(COMETH_RIGHT_MESSAGE);
 
         createRightComethsInLogoRecursively(
@@ -186,7 +186,7 @@ export const useComeths = () => {
     const result = await createComeths(positions, "down", async () => {
       getMyMap();
       const missingPositions = await getComethMissingPositions(positions);
-      if (missingPositions.length > 0) {
+      if (missingPositions && missingPositions.length > 0) {
         console.log(COMETH_DOWN_MESSAGE);
         createDownComethsInLogoRecursively(
           missingPositions,
@@ -206,6 +206,7 @@ export const useComeths = () => {
 
   const getComethMissingPositions = async (positions: Position[]) => {
     const mapObject = await fetchMyMap();
+    if (mapObject === null) return console.error("mapObject is null");
     const map = mapObject.content;
     const missingPositions: Position[] = [];
     positions.forEach((pos: Position) => {
@@ -229,7 +230,7 @@ export const useComeths = () => {
 
       const missingPositions = await getComethMissingPositions(positions);
 
-      if (missingPositions.length > 0) {
+      if (missingPositions && missingPositions.length > 0) {
         console.log(COMETH_LEFT_MESSAGE);
         createLeftComethsInLogoRecursively(
           missingPositions,
@@ -256,7 +257,7 @@ export const useComeths = () => {
     const result = await createComeths(positions, "up", async () => {
       getMyMap();
       const missingPositions = await getComethMissingPositions(positions);
-      if (missingPositions.length > 0) {
+      if (missingPositions && missingPositions.length > 0) {
         console.log(COMETH_UP_MESSAGE);
         createUpComethsInLogoRecursively(
           missingPositions,

@@ -4,6 +4,8 @@ import {
   DELETE_POLYANET,
   FAILED_CREATE_POLYANET,
   FAILED_DELETE_POLYANET,
+  MAP_OBJECT_IS_NULL,
+  POLYANETS_MESSAGE,
   POLYANET_TYPE,
   POST,
   STATUS_FULFILLED,
@@ -161,6 +163,7 @@ export const usePolyanets = () => {
     const result = await createPolyanets(polyPositions, async () => {
       getMyMap();
       const mapObject = await fetchMyMap();
+      if (mapObject === null) return console.error(MAP_OBJECT_IS_NULL);
       const map = mapObject.content;
       const missingPositions: Position[] = [];
       polyPositions.forEach((pos: Position) => {
@@ -172,7 +175,7 @@ export const usePolyanets = () => {
       });
 
       if (missingPositions.length > 0) {
-        console.log("Creating polyanets that failed in the previous calls");
+        console.log(POLYANETS_MESSAGE);
         createPolyanetsRecursively(
           missingPositions,
           getMyMap,

@@ -29,7 +29,9 @@ const Home: NextPage = () => {
 
   const getMyMap = async () => {
     const map = await fetchMyMap();
-    setMap(map.content);
+    if (map) {
+      setMap(map.content);
+    }
   };
 
   // on initial load
