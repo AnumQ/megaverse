@@ -35,6 +35,9 @@ export const getEmojiFromObject = (el: { type: number } | null) => {
   switch (el.type) {
     case 0:
       return "🪐";
+    case 2:
+      return "☄️";
+
     default:
       return "0";
   }

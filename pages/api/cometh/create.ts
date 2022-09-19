@@ -1,14 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { BASE_URL, POLYANETS } from "../../../src/constants";
+import { BASE_URL, COMETHS, POST } from "../../../src/constants";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
-    const response = await fetch(`${BASE_URL}/${POLYANETS}`, {
-      method: "DELETE",
+    const response = await fetch(`${BASE_URL}/${COMETHS}`, {
+      method: POST,
       headers: {
         Accept: "*/*",
         "Content-Type": "application/json",

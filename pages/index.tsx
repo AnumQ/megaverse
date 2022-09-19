@@ -5,28 +5,18 @@ import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import { usePolyanets } from "../src/hooks/usePolyanets";
 import { useMap } from "../src/hooks/useMap";
-import LoadingButton from "@mui/lab/LoadingButton";
 import Alert from "@mui/material/Alert";
-import { GoalMap } from "../src/UI/Goal";
+import { GoalMap } from "../src/UI/GoalMap";
 import { MyMap } from "../src/UI/MyMap";
-import { Position } from "../src/Model/Position";
-import { POLYANET_TYPE } from "../src/constants";
 import _ from "lodash";
 import { Phase1 } from "../src/components/Phase1";
-import { LogoItem } from "../src/Model/LogoItem";
 import { Phase2 } from "../src/components/Phase2";
-import { useLoading } from "../src/hooks/useLoading";
 
 const Home: NextPage = () => {
   // variables, states
   const [goalMap, setGoal] = useState<[]>([]);
   const [myMap, setMap] = useState<[]>([]);
 
-  const { deletePolyanets } = usePolyanets();
-  const {
-    isLoading: isClearMapButtonLoading,
-    setIsLoading: setIsClearMapButtonLoading,
-  } = useLoading();
   const [successInfo, setSuccessInfo] = useState("");
 
   const { fetchMap: fetchGoalMap, fetchMyMap } = useMap();
@@ -37,36 +27,9 @@ const Home: NextPage = () => {
     setGoal(goalMap);
   }
 
-  async function getMyMap() {
+  const getMyMap = async () => {
     const map = await fetchMyMap();
     setMap(map.content);
-
-    console.log(map.content);
-  }
-
-  const clearMap = async () => {
-    setIsClearMapButtonLoading(true);
-    const nonEmptyPositions: Position[] = [];
-    myMap.forEach((row: string[], rowIndex: number) => {
-      row.forEach((col: string, colIndex: number) => {
-        if (col) {
-          nonEmptyPositions.push({
-            row: `${rowIndex}`,
-            column: `${colIndex}`,
-          });
-        }
-      });
-    });
-    console.log(nonEmptyPositions);
-
-    const result = await deletePolyanets(nonEmptyPositions, () => {
-      getMyMap();
-    });
-
-    if (result) {
-      setSuccessInfo(result.success);
-    }
-    setIsClearMapButtonLoading(false);
   };
 
   // on initial load
@@ -90,6 +53,7 @@ const Home: NextPage = () => {
         <div className={styles.grid}>
           <Phase1 getMyMap={getMyMap} setSuccessInfo={setSuccessInfo} />
           <Phase2
+            myMap={myMap}
             goalMap={goalMap}
             getMyMap={getMyMap}
             setSuccessInfo={setSuccessInfo}
@@ -107,12 +71,7 @@ const Home: NextPage = () => {
         )}
         <div className={styles.inline}>
           <GoalMap goal={goalMap} />
-          <MyMap
-            myMap={myMap}
-            getMyMap={getMyMap}
-            clearMap={clearMap}
-            isClearMapButtonLoading={isClearMapButtonLoading}
-          />
+          <MyMap myMap={myMap} getMyMap={getMyMap} />
         </div>
       </main>
 

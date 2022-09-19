@@ -1,11 +1,14 @@
 import {
   CANDIDATE_ID,
+  CREATE_COMETH,
   CREATE_POLYANET,
   DELETE_POLYANET,
+  FAILED_CREATE_COMETHS,
   FAILED_CREATE_POLYANET,
   FAILED_DELETE_POLYANET,
   POST,
   STATUS_FULFILLED,
+  SUCCESS_CREATE_COMETHS,
   SUCCESS_CREATE_POLYANET,
   SUCCESS_DELETE_POLYANET,
 } from "../constants";
@@ -22,7 +25,7 @@ export const usePolyanets = () => {
 
   const startRow = 2;
 
-  const getPolyanetPositions = () => {
+  const getPolyanetPositionsPhase1 = () => {
     const posList: Position[] = [];
     const stopRow = rows.length - 1 - startRow;
     rows.forEach((row) => {
@@ -73,7 +76,7 @@ export const usePolyanets = () => {
   };
 
   const createPolyanetsPhase1 = async (onCompletion: () => void) => {
-    const posList = getPolyanetPositions();
+    const posList = getPolyanetPositionsPhase1();
     return createPolyanets(posList, onCompletion);
   };
 
@@ -82,9 +85,17 @@ export const usePolyanets = () => {
     return deletePolyanets(posList, onCompletion);
   };
 
-  const deletePolyanetsPhase2 = async (onCompletion: () => void) => {
-    const posList = getAllMapPositionsPhase2();
-    return deletePolyanets(posList, onCompletion);
+  const deletePolyanetsPhase2 = async (myMap: [], onCompletion: () => void) => {
+    const positionsToDelete: Position[] = [];
+    myMap.forEach((row: string[], rowIndex: number) => {
+      row.forEach((col: string, colIndex: number) => {
+        if (col) {
+          const pos = { row: rowIndex.toString(), column: colIndex.toString() };
+          positionsToDelete.push(pos);
+        }
+      });
+    });
+    return deletePolyanets(positionsToDelete, onCompletion);
   };
   const deletePolyanets = async (
     posList: Position[],
@@ -106,7 +117,7 @@ export const usePolyanets = () => {
 
       results.forEach((res, index) => {
         if (res.value.status !== 200) {
-          console.log(`${FAILED_DELETE_POLYANET} ${index}`);
+          console.error(`${FAILED_DELETE_POLYANET} ${index}`);
         }
       });
 
