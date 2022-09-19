@@ -2,26 +2,96 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Button from "@mui/material/Button";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePolyanets } from "../src/hooks/usePolyanets";
+import { useMap } from "../src/hooks/useMap";
+import { getEmojiFromObject, getEmojiFromString } from "../src/UI/Emoji";
 
 const Home: NextPage = () => {
   const { createPolyanets, deletePolyanets } = usePolyanets();
-  useEffect(() => {
-    async function fetchMap() {
-      try {
-        const res = await fetch("/api/map", {
-          method: "GET",
-        });
+  const { fetchMap: fetchGoalMap, fetchMyMap } = useMap();
 
-        const json = await res.json();
-        console.log(json);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetchMap();
+  const [goal, setGoal] = useState<[]>([]);
+  const [map, setMap] = useState<[]>([]);
+
+  async function getGoalMap() {
+    const goalMap = await fetchGoalMap();
+    setGoal(goalMap);
+  }
+
+  async function getMyMap() {
+    const myMap = await fetchMyMap();
+    console.log(myMap.content);
+    setMap(myMap.content);
+  }
+
+  useEffect(() => {
+    getGoalMap();
+    getMyMap();
   }, []);
+
+  const drawGoalRow = (el: string, i: number) => {
+    return (
+      <span className={styles.pos} key={i}>
+        {getEmojiFromString(el)}
+      </span>
+    );
+  };
+
+  const drawGoalMap = (g: [], index: number) => {
+    return (
+      <div key={index}>
+        <p>
+          {/* {index} */}
+          {g.map(drawGoalRow)}
+        </p>
+      </div>
+    );
+  };
+
+  const drawMyMapRow = (el: { type: number } | null, i: number) => {
+    return (
+      <span className={styles.pos} key={i}>
+        {getEmojiFromObject(el)}
+      </span>
+    );
+  };
+
+  const drawMyMap = (g: [], index: number) => {
+    return (
+      <div key={index}>
+        <p>
+          {/* {index} */}
+          {g.map(drawMyMapRow)}
+        </p>
+      </div>
+    );
+  };
+
+  const GoalMap = () => (
+    <div>
+      <div className={styles.inline}>
+        <h2>Goal Map</h2>
+      </div>
+      <div>{goal && goal.map(drawGoalMap)}</div>
+    </div>
+  );
+  const MyMap = () => (
+    <div>
+      <div className={styles.inline}>
+        <h2>My Map</h2>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            getMyMap();
+          }}
+        >
+          Fetch Map
+        </Button>
+      </div>
+      <div>{map && map.map(drawMyMap)}</div>
+    </div>
+  );
 
   return (
     <div className={styles.container}>
@@ -41,12 +111,26 @@ const Home: NextPage = () => {
             <p>Polyanet Cross 🪐 🪐 Click the button below 🪐 🪐 </p>
             <br />
             <div>
-              <Button variant="outlined" onClick={createPolyanets}>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  createPolyanets(() => {
+                    getMyMap();
+                  });
+                }}
+              >
                 Create
               </Button>
             </div>
             <div>
-              <Button variant="outlined" onClick={deletePolyanets}>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  deletePolyanets(() => {
+                    getMyMap();
+                  });
+                }}
+              >
                 Reset Map
               </Button>
             </div>
@@ -66,6 +150,10 @@ const Home: NextPage = () => {
               </Button>
             </div>
           </div>
+        </div>
+        <div className={styles.inline}>
+          <GoalMap />
+          <MyMap />
         </div>
       </main>
 

@@ -46,7 +46,7 @@ export const usePolyanets = () => {
     return posList;
   };
 
-  const createPolyanets = async () => {
+  const createPolyanets = async (onCompletion: () => void) => {
     const posList = getPolyanetPositions();
     const promises = posList.map((pos) => {
       return fetch(CREATE_POLYANET, {
@@ -67,12 +67,13 @@ export const usePolyanets = () => {
         }
       });
       console.log(SUCCESS_CREATE_POLYANET);
+      onCompletion();
     } catch (error) {
       console.error(error);
     }
   };
 
-  const deletePolyanets = async () => {
+  const deletePolyanets = async (onCompletion: () => void) => {
     const posList = getAllMapPositionsPhase1();
     const promises = posList.map((pos: Position) => {
       return fetch(DELETE_POLYANET, {
@@ -95,6 +96,7 @@ export const usePolyanets = () => {
       });
 
       console.log(SUCCESS_DELETE_POLYANET);
+      onCompletion();
     } catch (error) {
       console.error(error);
     }

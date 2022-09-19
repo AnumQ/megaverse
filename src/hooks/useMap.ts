@@ -20,5 +20,30 @@ export const useMap = () => {
     return posList;
   };
 
-  return { getAllMapPositionsPhase1 };
+  async function fetchMyMap() {
+    try {
+      const res = await fetch("/api/map", {
+        method: "GET",
+      });
+      const json = await res.json();
+      return json.map;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function fetchMap() {
+    try {
+      const res = await fetch("/api/map/goal", {
+        method: "GET",
+      });
+      const json = await res.json();
+      console.log(json.goal);
+      return json.goal;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  return { getAllMapPositionsPhase1, fetchMap, fetchMyMap };
 };
