@@ -5,20 +5,28 @@ import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import { usePolyanets } from "../src/hooks/usePolyanets";
 import { useMap } from "../src/hooks/useMap";
-import { getEmojiFromObject, getEmojiFromString } from "../src/UI/Emoji";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Alert from "@mui/material/Alert";
+import { drawGoalMap } from "../src/UI/Goal";
+import { drawMyMap } from "../src/UI/MyMap";
 
 const Home: NextPage = () => {
-  const { createPolyanets, deletePolyanets, isCreateLoading: isCreateLoadingPhase1, isDeleteLoading: isDeleteLoadingPhase1 } =
-    usePolyanets();
-  const { fetchMap: fetchGoalMap, fetchMyMap } = useMap();
-
+  // variables, states
   const [goal, setGoal] = useState<[]>([]);
   const [map, setMap] = useState<[]>([]);
 
   const [successInfo, setSuccessInfo] = useState("");
 
+  // functions, variables from hooks
+  const {
+    createPolyanets,
+    deletePolyanets,
+    isCreateLoading: isCreateLoadingPhase1,
+    isDeleteLoading: isDeleteLoadingPhase1,
+  } = usePolyanets();
+  const { fetchMap: fetchGoalMap, fetchMyMap } = useMap();
+
+  // async functions
   async function getGoalMap() {
     const goalMap = await fetchGoalMap();
     setGoal(goalMap);
@@ -30,48 +38,11 @@ const Home: NextPage = () => {
     setMap(myMap.content);
   }
 
+  // on initial load
   useEffect(() => {
     getGoalMap();
     getMyMap();
   }, []);
-
-  const drawGoalRow = (el: string, i: number) => {
-    return (
-      <span className={styles.pos} key={i}>
-        {getEmojiFromString(el)}
-      </span>
-    );
-  };
-
-  const drawGoalMap = (g: [], index: number) => {
-    return (
-      <div key={index}>
-        <p>
-          {/* {index} */}
-          {g.map(drawGoalRow)}
-        </p>
-      </div>
-    );
-  };
-
-  const drawMyMapRow = (el: { type: number } | null, i: number) => {
-    return (
-      <span className={styles.pos} key={i}>
-        {getEmojiFromObject(el)}
-      </span>
-    );
-  };
-
-  const drawMyMap = (g: [], index: number) => {
-    return (
-      <div key={index}>
-        <p>
-          {/* {index} */}
-          {g.map(drawMyMapRow)}
-        </p>
-      </div>
-    );
-  };
 
   const GoalMap = () => (
     <div>
