@@ -26,3 +26,16 @@ export const CANDIDATE_ID = "ffdba451-a8a7-43eb-a3fd-0231efd01071";
 /* Megaverse */
 export const POLYANET_TYPE = "POLYANET";
 export const RIGHT_COMETH_TYPE = "RIGHT_COMETH";
+export const LEFT_COMETH_TYPE = "LEFT_COMETH";
+export const UP_COMETH_TYPE = "UP_COMETH";
+export const DOWN_COMETH_TYPE = "DOWN_COMETH";
+export const SPACE = "SPACE";
+
+export const COMETH_UP_MESSAGE =
+  "Creating up comeths positions that failed in the previous calls";
+export const COMETH_LEFT_MESSAGE =
+  "Creating left comeths positions that failed in the previous calls";
+export const COMETH_RIGHT_MESSAGE =
+  "Creating right comeths positions that failed in the previous calls";
+export const COMETH_DOWN_MESSAGE =
+  "Creating down comeths positions that failed in the previous calls";

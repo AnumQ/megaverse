@@ -71,7 +71,7 @@ const Home: NextPage = () => {
         )}
         <div className={styles.inline}>
           <GoalMap goal={goalMap} />
-          <MyMap myMap={myMap} getMyMap={getMyMap} />
+          <MyMap myMap={myMap} />
         </div>
       </main>
 

@@ -21,7 +21,7 @@ const rows = Array.from(Array(rowsNumberPhase1).keys());
 const cols = Array.from(Array(columnsNumberPhase1).keys());
 
 export const usePolyanets = () => {
-  const { getAllMapPositionsPhase1, getAllMapPositionsPhase2 } = useMap();
+  const { getAllMapPositionsPhase1 } = useMap();
 
   const startRow = 2;
 
@@ -97,6 +97,7 @@ export const usePolyanets = () => {
     });
     return deletePolyanets(positionsToDelete, onCompletion);
   };
+
   const deletePolyanets = async (
     posList: Position[],
     onCompletion: () => void

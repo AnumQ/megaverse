@@ -17,13 +17,7 @@ const drawMyMap = (g: [], index: number) => {
   );
 };
 
-export const MyMap = ({
-  myMap,
-  getMyMap,
-}: {
-  myMap: [];
-  getMyMap: () => Promise<void>;
-}) => (
+export const MyMap = ({ myMap }: { myMap: [] }) => (
   <div>
     <div className={styles.inline}>
       <h2>My Map</h2>
