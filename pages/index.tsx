@@ -8,7 +8,7 @@ import { useMap } from "../src/hooks/useMap";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Alert from "@mui/material/Alert";
 import { drawGoalMap } from "../src/UI/Goal";
-import { drawMyMap } from "../src/UI/MyMap";
+import { drawMyMap, MyMap } from "../src/UI/MyMap";
 
 const Home: NextPage = () => {
   // variables, states
@@ -50,22 +50,6 @@ const Home: NextPage = () => {
         <h2>Goal Map</h2>
       </div>
       <div>{goal && goal.map(drawGoalMap)}</div>
-    </div>
-  );
-  const MyMap = () => (
-    <div>
-      <div className={styles.inline}>
-        <h2>My Map</h2>
-        <Button
-          variant="outlined"
-          onClick={() => {
-            getMyMap();
-          }}
-        >
-          Fetch Map
-        </Button>
-      </div>
-      <div>{map && map.map(drawMyMap)}</div>
     </div>
   );
 
@@ -167,7 +151,7 @@ const Home: NextPage = () => {
         )}
         <div className={styles.inline}>
           <GoalMap />
-          <MyMap />
+          <MyMap myMap={map} getMyMap={getMyMap} />
         </div>
       </main>
 
