@@ -29,7 +29,7 @@ export const FAILED_DELETE_SOLOON = "Failed to delete soloon at index: ";
 export const SUCCESS_DELETE_SOLOON = "Successfully deleted soloon.";
 
 export const GET_MY_MAP = "/api/map";
-export const GET_MAP_GOAL = "/api/map/goal";
+export const GET_GOAL_MAP = "/api/map/goal";
 
 /* USER */
 export const CANDIDATE_ID = "ffdba451-a8a7-43eb-a3fd-0231efd01071";

@@ -1,4 +1,4 @@
-import { GET, GET_MY_MAP } from "../constants";
+import { GET, GET_GOAL_MAP, GET_MY_MAP } from "../constants";
 
 type Position = {
   row: string;
@@ -50,9 +50,9 @@ export const useMap = () => {
     }
   }
 
-  async function fetchMap() {
+  async function fetchGoalMap() {
     try {
-      const res = await fetch(GET_MY_MAP, {
+      const res = await fetch(GET_GOAL_MAP, {
         method: GET,
       });
       const json = await res.json();
@@ -64,7 +64,7 @@ export const useMap = () => {
 
   return {
     getAllMapPositionsPhase1,
-    fetchMap,
+    fetchGoalMap,
     fetchMyMap,
     getAllMapPositionsPhase2,
   };

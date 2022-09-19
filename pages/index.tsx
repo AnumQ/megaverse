@@ -18,7 +18,7 @@ const Home: NextPage = () => {
 
   const [successInfo, setSuccessInfo] = useState("");
 
-  const { fetchMap: fetchGoalMap, fetchMyMap } = useMap();
+  const { fetchGoalMap, fetchMyMap } = useMap();
 
   // async functions
   async function getGoalMap() {
