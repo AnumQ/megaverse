@@ -1,7 +1,7 @@
-import LoadingButton from "@mui/lab/LoadingButton";
 import styles from "../../styles/Home.module.css";
 import { usePolyanets } from "../hooks/usePolyanets";
 import Button from "@mui/material/Button";
+import { CustomLoadingButton } from "../UI/CustomLoadingButton";
 
 export const Phase1 = ({
   getMyMap,
@@ -24,13 +24,7 @@ export const Phase1 = ({
       <br />
       <div>
         {isCreateLoadingPhase1 ? (
-          <LoadingButton
-            loading={isCreateLoadingPhase1}
-            loadingIndicator="Loading…"
-            variant="outlined"
-          >
-            Loading ...
-          </LoadingButton>
+          <CustomLoadingButton />
         ) : (
           <Button
             variant="outlined"
@@ -50,13 +44,7 @@ export const Phase1 = ({
       </div>
       <div>
         {isDeleteLoadingPhase1 ? (
-          <LoadingButton
-            loading={isDeleteLoadingPhase1}
-            loadingIndicator="Loading…"
-            variant="outlined"
-          >
-            Loading ...
-          </LoadingButton>
+          <CustomLoadingButton />
         ) : (
           <Button
             variant="outlined"
