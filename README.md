@@ -1,6 +1,4 @@
-## Run the app
-
-First, run the development server:
+## Run the app:
 
 ```bash
 yarn dev
