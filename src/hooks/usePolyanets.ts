@@ -4,6 +4,7 @@ import {
   DELETE_POLYANET,
   FAILED_CREATE_POLYANET,
   FAILED_DELETE_POLYANET,
+  POLYANET_TYPE,
   POST,
   STATUS_FULFILLED,
   SUCCESS_CREATE_POLYANET,
@@ -11,6 +12,8 @@ import {
 } from "../constants";
 import { Position } from "../Model/Position";
 import { useMap } from "./useMap";
+import _ from "lodash";
+import { LogoItem } from "../Model/LogoItem";
 
 export const usePolyanets = () => {
   const rowsNumberPhase1 = 11;
@@ -19,7 +22,7 @@ export const usePolyanets = () => {
   const cols = Array.from(Array(columnsNumberPhase1).keys());
   const startRow = 2;
 
-  const { getAllMapPositionsPhase1 } = useMap();
+  const { getAllMapPositionsPhase1, fetchMyMap } = useMap();
 
   const getPolyanetPositionsPhase1 = () => {
     const posList: Position[] = [];
@@ -123,6 +126,68 @@ export const usePolyanets = () => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const createPolyanetsInLogo = async (
+    logoDataList: LogoItem[],
+    getMyMap: () => void,
+    setIsCreateButtonLoading: any,
+    setSuccessInfo: any
+  ) => {
+    const polyPositions = _.compact(
+      logoDataList.map((logoItem) =>
+        logoItem.type === POLYANET_TYPE ? logoItem.position : null
+      )
+    );
+    try {
+      await createPolyanetsRecursively(
+        polyPositions,
+        getMyMap,
+        setIsCreateButtonLoading,
+        setSuccessInfo
+      );
+    } catch (error) {
+      setIsCreateButtonLoading(false);
+      console.error(error);
+    }
+  };
+
+  const createPolyanetsRecursively = async (
+    polyPositions: Position[],
+    getMyMap: () => void,
+    setIsCreateButtonLoading: any,
+    setSuccessInfo: any
+  ) => {
+    const result = await createPolyanets(polyPositions, async () => {
+      getMyMap();
+      const mapObject = await fetchMyMap();
+      const map = mapObject.content;
+      const missingPositions: Position[] = [];
+      polyPositions.forEach((pos: Position) => {
+        const mapPos = map[pos.row][pos.column];
+
+        if (mapPos === null || (mapPos && mapPos.type !== 0)) {
+          missingPositions.push(pos);
+        }
+      });
+
+      if (missingPositions.length > 0) {
+        console.log("Creating polyanets that failed in the previous calls");
+        createPolyanetsRecursively(
+          missingPositions,
+          getMyMap,
+          setIsCreateButtonLoading,
+          setSuccessInfo
+        );
+      } else {
+        setIsCreateButtonLoading(false);
+
+        if (result) {
+          console.log(result.success);
+          setSuccessInfo(result?.success);
+        }
+      }
+    });
   };
 
   return {

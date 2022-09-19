@@ -106,34 +106,6 @@ export const Phase2 = ({
     });
   };
 
-  const createPolyanetsRecursively = async (polyPositions: Position[]) => {
-    const result = await createPolyanets(polyPositions, async () => {
-      getMyMap();
-      const mapObject = await fetchMyMap();
-      const map = mapObject.content;
-      const missingPositions: Position[] = [];
-      polyPositions.forEach((pos: Position) => {
-        const mapPos = map[pos.row][pos.column];
-
-        if (mapPos === null || (mapPos && mapPos.type !== 0)) {
-          missingPositions.push(pos);
-        }
-      });
-
-      if (missingPositions.length > 0) {
-        console.log("Creating polyanets that failed in the previous calls");
-        createPolyanetsRecursively(missingPositions);
-      } else {
-        setIsCreateButtonLoading(false);
-
-        if (result) {
-          console.log(result.success);
-          setSuccessInfo(result?.success);
-        }
-      }
-    });
-  };
-
   return (
     <div className={styles.card}>
       <h2>Phase 2</h2>
