@@ -3,7 +3,6 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
-import { usePolyanets } from "../src/hooks/usePolyanets";
 import { useMap } from "../src/hooks/useMap";
 import Alert from "@mui/material/Alert";
 import { GoalMap } from "../src/UI/GoalMap";

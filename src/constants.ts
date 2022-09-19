@@ -7,6 +7,7 @@ export const SOLOONS = "soloons";
 
 export const CREATE_POLYANET = "/api/polyanet/create";
 export const POST = "POST";
+export const GET = "GET";
 export const STATUS_FULFILLED = "fulfilled";
 export const FAILED_CREATE_POLYANET = "Failed to create polyanet at index: ";
 export const SUCCESS_CREATE_POLYANET = "Successfully created polyanets.";
@@ -26,6 +27,9 @@ export const FAILED_CREATE_SOLOON = "Failed to create soloon at index: ";
 export const SUCCESS_CREATE_SOLOON = "Successfully created soloon.";
 export const FAILED_DELETE_SOLOON = "Failed to delete soloon at index: ";
 export const SUCCESS_DELETE_SOLOON = "Successfully deleted soloon.";
+
+export const GET_MY_MAP = "/api/map";
+export const GET_MAP_GOAL = "/api/map/goal";
 
 /* USER */
 export const CANDIDATE_ID = "ffdba451-a8a7-43eb-a3fd-0231efd01071";

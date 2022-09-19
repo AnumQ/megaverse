@@ -62,7 +62,7 @@ export const Phase2 = ({
       });
     }
 
-    //polyanet
+    // create polyanet
     createPolyanetsInLogo(
       logoDataList,
       getMyMap,
@@ -70,7 +70,7 @@ export const Phase2 = ({
       setSuccessInfo
     );
 
-    // comeths
+    // create comeths
     createUpComethsInLogo(
       logoDataList,
       getMyMap,
@@ -96,7 +96,7 @@ export const Phase2 = ({
       setSuccessInfo
     );
 
-    // soloons
+    // create soloons
     createSoloonsInLogo(
       logoDataList,
       getMyMap,

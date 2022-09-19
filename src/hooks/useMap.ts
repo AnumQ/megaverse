@@ -1,3 +1,5 @@
+import { GET, GET_MY_MAP } from "../constants";
+
 type Position = {
   row: string;
   column: string;
@@ -38,8 +40,8 @@ export const useMap = () => {
 
   async function fetchMyMap() {
     try {
-      const res = await fetch("/api/map", {
-        method: "GET",
+      const res = await fetch(GET_MY_MAP, {
+        method: GET,
       });
       const json = await res.json();
       return json.map;
@@ -50,8 +52,8 @@ export const useMap = () => {
 
   async function fetchMap() {
     try {
-      const res = await fetch("/api/map/goal", {
-        method: "GET",
+      const res = await fetch(GET_MY_MAP, {
+        method: GET,
       });
       const json = await res.json();
       return json.goal;
