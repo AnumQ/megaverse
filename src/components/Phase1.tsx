@@ -43,18 +43,18 @@ export const Phase1 = ({
       <p>Polyanet Cross 🪐 🪐 Click the button below 🪐 🪐 </p>
       <br />
       <div>
-        {isCreateLoadingPhase1 ? (
-          <CustomLoadingButton />
-        ) : (
-          <CustomButton title="Create" onClick={handleCreate} />
-        )}
+        <CustomButton
+          isLoading={isCreateLoadingPhase1}
+          title="Create"
+          onClick={handleCreate}
+        />
       </div>
       <div>
-        {isDeleteLoadingPhase1 ? (
-          <CustomLoadingButton />
-        ) : (
-          <CustomButton title="Reset Map" onClick={handleReset} />
-        )}
+        <CustomButton
+          isLoading={isDeleteLoadingPhase1}
+          title="Reset Map"
+          onClick={handleReset}
+        />
       </div>
     </div>
   );

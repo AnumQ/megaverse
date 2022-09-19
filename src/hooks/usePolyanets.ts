@@ -19,9 +19,9 @@ const rows = Array.from(Array(rowsNumberPhase1).keys());
 const cols = Array.from(Array(columnsNumberPhase1).keys());
 
 export const usePolyanets = () => {
-  const { isLoading: isCreateLoading, setIsLoading: setIsCreateButtonLoading } =
+  const { isLoading: isCreatePhase1Loading, setIsLoading: setIsCreateButtonLoading } =
     useLoading();
-  const { isLoading: isDeleteLoading, setIsLoading: setIsDeleteButtonLoading } =
+  const { isLoading: isDeletePhase1Loading, setIsLoading: setIsDeleteButtonLoading } =
     useLoading();
   const { getAllMapPositionsPhase1 } = useMap();
 
@@ -121,7 +121,7 @@ export const usePolyanets = () => {
     createPolyanetsPhase1,
     createPolyanets,
     deletePolyanets,
-    isCreateLoading,
-    isDeleteLoading,
+    isCreateLoading: isCreatePhase1Loading,
+    isDeleteLoading: isDeletePhase1Loading,
   };
 };

@@ -13,6 +13,8 @@ import { Position } from "../src/Model/Position";
 import { POLYANET_TYPE } from "../src/constants";
 import _ from "lodash";
 import { Phase1 } from "../src/components/Phase1";
+import { LogoItem } from "../src/Model/LogoItem";
+import { Phase2 } from "../src/components/Phase2";
 
 const Home: NextPage = () => {
   // variables, states
@@ -21,77 +23,6 @@ const Home: NextPage = () => {
 
   const [successInfo, setSuccessInfo] = useState("");
 
-  // functions, variables from hooks
-  const {
-    createPolyanetsPhase1,
-    createPolyanets,
-    deletePolyanets,
-    isCreateLoading: isCreateLoadingPhase1,
-    isDeleteLoading: isDeleteLoadingPhase1,
-  } = usePolyanets();
-
-  type LogoItem = {
-    position: Position;
-    type: string;
-  };
-  const logoDataList: LogoItem[] = [];
-
-  const createLogo = async () => {
-    if (goalMap.length > 0) {
-      goalMap.forEach((row: string[], rowIndex: number) => {
-        row.forEach((col: string, colIndex: number) => {
-          if (col !== "SPACE") {
-            // console.log(`Type: ${col} - Pos: ${rowIndex}, ${colIndex}`);
-
-            const logoItem = {
-              position: {
-                row: rowIndex.toString(),
-                column: colIndex.toString(),
-              },
-              type: col,
-            };
-
-            logoDataList.push(logoItem);
-          }
-        });
-      });
-    }
-
-    // console.log("logoDataList");
-    // console.log(logoDataList);
-
-    // use this list to create a list of promnise calls
-
-    const polyPositions = _.compact(
-      logoDataList.map((logoItem) =>
-        logoItem.type === POLYANET_TYPE ? logoItem.position : null
-      )
-    );
-
-    console.log(polyPositions);
-
-    try {
-      const result = await createPolyanets(polyPositions, () => {
-        getMyMap();
-      });
-
-      if (result) {
-        setSuccessInfo(result?.success);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    // logoDataList.forEach((logoItem) => {
-    //   // console.log(logoItem.type);
-
-    //   if (logoItem.type === POLYANET_TYPE) {
-    //     polyanetsPositions.push(logoItem.position);
-    //   }
-    // });
-
-    // console.log("polyanetsPositions");
-    // console.log(polyanetsPositions);
-  };
   const { fetchMap: fetchGoalMap, fetchMyMap } = useMap();
 
   // async functions
@@ -111,24 +42,6 @@ const Home: NextPage = () => {
     getMyMap();
   }, []);
 
-  const Phase2 = () => (
-    <div className={styles.card}>
-      <h2>Phase 2</h2>
-      <p>Crossmint logo. With 🌙SOLoons and ☄comETHs!</p>
-      <br />
-      <div>
-        <Button variant="outlined" onClick={createLogo}>
-          Create
-        </Button>
-      </div>
-      <div>
-        <Button variant="outlined" onClick={() => {}}>
-          Reset Map
-        </Button>
-      </div>
-    </div>
-  );
-
   return (
     <div className={styles.container}>
       <Head>
@@ -143,7 +56,11 @@ const Home: NextPage = () => {
 
         <div className={styles.grid}>
           <Phase1 getMyMap={getMyMap} setSuccessInfo={setSuccessInfo} />
-          <Phase2 />
+          <Phase2
+            goalMap={goalMap}
+            getMyMap={getMyMap}
+            setSuccessInfo={setSuccessInfo}
+          />
         </div>
 
         {successInfo ? (
