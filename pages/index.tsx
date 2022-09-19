@@ -3,110 +3,10 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Button from "@mui/material/Button";
 import { useEffect } from "react";
-import { CANDIDATE_ID } from "../src/constants";
+import { usePolyanets } from "../src/hooks/usePolyanets";
 
-type Position = {
-  row: string;
-  column: string;
-};
 const Home: NextPage = () => {
-  const rowsNumberPhase1 = 11;
-  const columnsNumberPhase1 = 11;
-  const rows = Array.from(Array(rowsNumberPhase1).keys());
-  const cols = Array.from(Array(columnsNumberPhase1).keys());
-  const startRow = 2;
-  const startColumn = 2;
-
-  const getAllPositions = () => {
-    const posList: Position[] = [];
-    rows.forEach((row) => {
-      cols.forEach((col) => {
-        const pos: Position = { row: `${row}`, column: `${col}` };
-        posList.push(pos);
-      });
-    });
-    return posList;
-  };
-
-  const getPolyanetPositions = () => {
-    const posList: Position[] = [];
-    const stopRow = rows.length - 1 - startRow;
-    console.log(stopRow);
-    rows.forEach((row) => {
-      if (row >= startRow && row <= stopRow) {
-        cols.forEach((col) => {
-          if (col >= startRow && col <= stopRow) {
-            const pos1: Position = { row: `${row}`, column: `${col}` };
-            if (col === row) {
-              posList.push(pos1);
-              const colInvert = 10 - col;
-              const pos2: Position = { row: `${row}`, column: `${colInvert}` };
-              posList.push(pos2);
-            }
-          }
-        });
-      }
-    });
-
-    return posList;
-  };
-
-  const createPolyanet = async () => {
-    const posList = getPolyanetPositions();
-    console.log(posList);
-    const promises = posList.map((pos) => {
-      return fetch("/api/polyanets/create", {
-        method: "POST",
-        body: JSON.stringify({
-          candidateId: CANDIDATE_ID,
-          row: `${pos.row}`,
-          column: `${pos.column}`,
-        }),
-      });
-    });
-
-    try {
-      const results = await Promise.allSettled(promises);
-
-      results.forEach((res, index) => {
-        if (res.status !== "fulfilled") {
-          console.log(`Failed to Create at position ${index}`);
-        }
-      });
-      console.log("Successfully created polyanets");
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const deletePolyanets = async () => {
-    const posList = getAllPositions();
-    const promises = posList.map((pos) => {
-      return fetch("/api/polyanets/delete", {
-        method: "POST",
-        body: JSON.stringify({
-          candidateId: CANDIDATE_ID,
-          row: `${pos.row}`,
-          column: `${pos.column}`,
-        }),
-      });
-    });
-
-    try {
-      const results = await Promise.allSettled(promises);
-
-      results.forEach((res, index) => {
-        if (res.value.status !== 200) {
-          console.log(`Failed to Delete at position ${index}`);
-        }
-      });
-
-      console.log("Successfully deleted polyanets");
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+  const { createPolyanets, deletePolyanets } = usePolyanets();
   useEffect(() => {
     async function fetchMap() {
       try {
@@ -141,7 +41,7 @@ const Home: NextPage = () => {
             <p>Click the button below to create Polyanet Cross</p>
             <br />
             <div>
-              <Button variant="outlined" onClick={createPolyanet}>
+              <Button variant="outlined" onClick={createPolyanets}>
                 Create
               </Button>
             </div>
