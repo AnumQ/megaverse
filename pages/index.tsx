@@ -38,7 +38,7 @@ const Home: NextPage = () => {
         <div className={styles.grid}>
           <div className={styles.card}>
             <h2>Phase1</h2>
-            <p>Click the button below to create Polyanet Cross</p>
+            <p>Polyanet Cross 🪐 🪐 Click the button below 🪐 🪐 </p>
             <br />
             <div>
               <Button variant="outlined" onClick={createPolyanets}>
@@ -47,6 +47,21 @@ const Home: NextPage = () => {
             </div>
             <div>
               <Button variant="outlined" onClick={deletePolyanets}>
+                Reset Map
+              </Button>
+            </div>
+          </div>
+          <div className={styles.card}>
+            <h2>Phase 2</h2>
+            <p>Crossmint logo. With 🌙SOLoons and ☄comETHs!</p>
+            <br />
+            <div>
+              <Button variant="outlined" onClick={() => {}}>
+                Create
+              </Button>
+            </div>
+            <div>
+              <Button variant="outlined" onClick={() => {}}>
                 Reset Map
               </Button>
             </div>
